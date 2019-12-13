@@ -21,6 +21,7 @@ public:
 	void SetTransform(const float* matrix) const;
 	void SetPos(float x, float y, float z);
 	vec3 GetPos() const;
+	vec3 GetFoward();
 
 private:
 	btRigidBody* body = nullptr;

@@ -59,3 +59,21 @@ vec3 PhysBody3D::GetPos() const
 	return Vpos;
 }
 
+// ---------------------------------------------------------
+vec3 PhysBody3D::GetFoward() 
+{
+	mat4x4 transform;
+	GetTransform(&transform);
+
+
+	mat3x3 rotation(transform);
+
+	vec3 fw(1.f,1.f, 1.f);
+
+	fw = rotation * fw;
+
+
+	return fw;
+}
+
+

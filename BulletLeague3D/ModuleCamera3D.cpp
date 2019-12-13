@@ -101,10 +101,22 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * length(Position);
 	}
 	*/
+	vec3 vehiclePos = App->player->vehicle->GetPos();
+
+	distanceFromCar = { 0,5,-10 };
 
 
+	mat4x4 transform;
 
-	Reference = App->player->vehicle->GetPos();
+	App->player->vehicle->GetTransform(&transform);
+
+	mat3x3 rotation(transform);
+
+	Position = vehiclePos + rotation *   distanceFromCar;
+
+
+	
+	LookAt(App->player->vehicle->GetPos());
 
 
 
