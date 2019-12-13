@@ -20,6 +20,12 @@ struct Wheel
 	bool steering; // does this wheel turns ?
 };
 
+struct Chassis 
+{
+	
+
+};
+
 struct VehicleInfo
 {
 	~VehicleInfo();
@@ -35,6 +41,7 @@ struct VehicleInfo
 	float maxSuspensionForce; // defaults to 6000 / max force to the chassis
 
 	Wheel* wheels;
+	Chassis* chassis;
 	int num_wheels;
 };
 
