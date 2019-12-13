@@ -22,7 +22,8 @@ struct Wheel
 
 struct Chassis 
 {
-	
+	vec3 chassis_size;
+	vec3 chassis_offset;
 
 };
 
