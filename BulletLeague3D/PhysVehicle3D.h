@@ -44,6 +44,7 @@ struct VehicleInfo
 	Wheel* wheels;
 	Chassis* chassis;
 	int num_wheels;
+	int num_chassis;
 };
 
 

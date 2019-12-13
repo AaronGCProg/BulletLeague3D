@@ -98,28 +98,26 @@ bool ModulePlayer::Start()
 
 
 	//All chassis parts
-	car.chassis = new Chassis[6];
-	//Main Body
-	car.chassis[0].chassis_size.Set(2, 1.25, 4);
-	car.chassis[0].chassis_offset.Set(0, 1.4f, 0);
+	car.num_chassis = 4;
+	car.chassis = new Chassis[4];
 
 	//front mudward
-	car.chassis[1].chassis_size.Set(2, 0.5, 1);
-	car.chassis[1].chassis_offset.Set(0, 1.f, 2.5f);
+	car.chassis[0].chassis_size.Set(2, 0.5, 1);
+	car.chassis[0].chassis_offset.Set(0, 1.f, 2.5f);
 
 	//back mudward
-	car.chassis[2].chassis_size.Set(2, 0.5, 1);
-	car.chassis[2].chassis_offset.Set(0, 1.f, -2.5f);
+	car.chassis[1].chassis_size.Set(2, 0.5, 1);
+	car.chassis[1].chassis_offset.Set(0, 1.f, -2.5f);
 
 	//spoiler
+	car.chassis[2].chassis_size.Set(0.1f, 0.6f, 0.2f);
+	car.chassis[2].chassis_offset.Set(-0.5, 1.6f, -2.75f);
+
 	car.chassis[3].chassis_size.Set(0.1f, 0.6f, 0.2f);
-	car.chassis[3].chassis_offset.Set(-0.5, 1.6f, -2.75f);
+	car.chassis[3].chassis_offset.Set(0.5, 1.6f, -2.75f);
 
-	car.chassis[4].chassis_size.Set(0.1f, 0.6f, 0.2f);
-	car.chassis[4].chassis_offset.Set(0.5, 1.6f, -2.75f);
-
-	car.chassis[5].chassis_size.Set(2.f, 0.2f, 0.4f);
-	car.chassis[5].chassis_offset.Set(0.f, 2.f, -2.75f);
+	car.chassis[4].chassis_size.Set(2.f, 0.2f, 0.4f);
+	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);

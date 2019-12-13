@@ -325,7 +325,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	}
 	// ---------------------
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < info.num_chassis; i++)
 	{
 		colShape = new btBoxShape(btVector3(info.chassis[i].chassis_size.x * 0.5f, info.chassis[i].chassis_size.y * 0.5f, info.chassis[i].chassis_size.z * 0.5f));
 		shapes.add(colShape);
