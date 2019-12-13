@@ -26,6 +26,9 @@ public:
 	
 	vec3 X, Y, Z, Position, Reference, distanceFromCar;
 
+	bool cameraDebug = false;
+	bool lookAtBall = false;
+
 private:
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;

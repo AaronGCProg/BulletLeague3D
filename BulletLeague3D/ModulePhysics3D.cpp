@@ -66,6 +66,12 @@ bool ModulePhysics3D::Start()
 		world->addRigidBody(body);
 	}
 
+	Sphere s(1);
+	s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	float force = 5.0f;
+
+	 AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
+
 	return true;
 }
 
@@ -214,6 +220,9 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
 	bodies.add(pbody);
+
+	if (matchBall == nullptr)
+		matchBall = pbody;
 
 	return pbody;
 }
