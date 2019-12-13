@@ -2,9 +2,11 @@
 #define __PhysBody3D_H__
 
 #include "p2List.h"
+#include "glmath.h"
 
 class btRigidBody;
 class Module;
+
 
 // =================================================
 struct PhysBody3D
@@ -18,6 +20,7 @@ public:
 	void GetTransform(float* matrix) const;
 	void SetTransform(const float* matrix) const;
 	void SetPos(float x, float y, float z);
+	vec3 GetPos() const;
 
 private:
 	btRigidBody* body = nullptr;
