@@ -179,6 +179,7 @@ public:
 		return forwardW;
 	}
 
+
 	///Velocity of vehicle (positive if velocity vector has same direction as foward vector)
 	btScalar	getCurrentSpeedKmHour() const
 	{
