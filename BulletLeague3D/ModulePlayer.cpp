@@ -35,7 +35,7 @@ bool ModulePlayer::Start()
 	float connection_height = 1.2f;
 	float wheel_radius = 0.6f;
 	float wheel_width = 0.5f;
-	float suspensionRestLength = 1.2f;
+	float suspensionRestLength = 0.8f;
 
 	// Don't change anything below this line ------------------
 
@@ -97,6 +97,27 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 
+	//All chassis parts
+	car.num_chassis = 4;
+	car.chassis = new Chassis[4];
+
+	//front mudward
+	car.chassis[0].chassis_size.Set(2, 0.5, 1);
+	car.chassis[0].chassis_offset.Set(0, 1.f, 2.5f);
+
+	//back mudward
+	car.chassis[1].chassis_size.Set(2, 0.5, 1);
+	car.chassis[1].chassis_offset.Set(0, 1.f, -2.5f);
+
+	//spoiler
+	car.chassis[2].chassis_size.Set(0.1f, 0.6f, 0.2f);
+	car.chassis[2].chassis_offset.Set(-0.5, 1.6f, -2.75f);
+
+	car.chassis[3].chassis_size.Set(0.1f, 0.6f, 0.2f);
+	car.chassis[3].chassis_offset.Set(0.5, 1.6f, -2.75f);
+
+	car.chassis[4].chassis_size.Set(2.f, 0.2f, 0.4f);
+	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
@@ -142,8 +163,8 @@ update_status ModulePlayer::Update(float dt)
 		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
 		btVector3 correctedForce = localRot * relativeForce;
 
-		if (correctedForce.getX() > MAX_TORQUE)
-			correctedForce.setX(MAX_TORQUE);
+		if (correctedForce.getY() > MAX_TORQUE)
+			correctedForce.setY(MAX_TORQUE);
 
 		vehicle->myBody->applyTorque(correctedForce);
 	}
@@ -179,8 +200,11 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->myBody->applyTorque(correctedForce);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+
+		vehicle->myBody->setAngularVelocity({ 0,0,0 });
+
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
 		
 		

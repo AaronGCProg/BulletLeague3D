@@ -22,7 +22,8 @@ struct Wheel
 
 struct Chassis 
 {
-	
+	vec3 chassis_size;
+	vec3 chassis_offset;
 
 };
 
@@ -43,6 +44,7 @@ struct VehicleInfo
 	Wheel* wheels;
 	Chassis* chassis;
 	int num_wheels;
+	int num_chassis;
 };
 
 
