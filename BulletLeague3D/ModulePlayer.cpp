@@ -142,6 +142,8 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
 	{
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
+
+		
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
