@@ -142,8 +142,14 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
 	{
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
-
 		
+		// Local Force Translation
+		btVector3 relativeForce = btVector3(50000.0f, 0.0f, 0.0f);
+		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+		btVector3 correctedForce = localRot * relativeForce;
+
+		vehicle->myBody->applyTorque(correctedForce);
+
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
