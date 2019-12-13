@@ -39,12 +39,12 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x*0.5f;
-	float half_length = car.chassis_size.z*0.5f;
-	
-	vec3 direction(0,-1,0);
-	vec3 axis(-1,0,0);
-	
+	float half_width = car.chassis_size.x * 0.5f;
+	float half_length = car.chassis_size.z * 0.5f;
+
+	vec3 direction(0, -1, 0);
+	vec3 axis(-1, 0, 0);
+
 	car.num_wheels = 4;
 	car.wheels = new Wheel[4];
 
@@ -96,7 +96,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].brake = true;
 	car.wheels[3].steering = false;
 
-	
+
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
@@ -120,35 +120,69 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
+
+		// Local Force Translation
+		btVector3 relativeForce = btVector3(5000.0f, 0.0f, 0.0f);
+		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+		btVector3 correctedForce = localRot * relativeForce;
+
+		if (correctedForce.getX() >= MAX_TORQUE)
+			correctedForce.setX(MAX_TORQUE);
+
+		vehicle->myBody->applyTorque(correctedForce);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn +=  TURN_DEGREES;
+
+		btVector3 relativeForce = btVector3(0.0f, 5000.0f, 0.0f);
+		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+		btVector3 correctedForce = localRot * relativeForce;
+
+		if (correctedForce.getX() > MAX_TORQUE)
+			correctedForce.setX(MAX_TORQUE);
+
+		vehicle->myBody->applyTorque(correctedForce);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		if(turn > -TURN_DEGREES)
 			turn -= TURN_DEGREES;
+
+		// Local Force Translation
+		btVector3 relativeForce = btVector3(0.0f, -5000.0f, 0.0f);
+		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+		btVector3 correctedForce = localRot * relativeForce;
+
+		if (correctedForce.getY() < -MAX_TORQUE)
+			correctedForce.setY(-MAX_TORQUE);
+
+		vehicle->myBody->applyTorque(correctedForce);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
+
+		// Local Force Translation
+		btVector3 relativeForce = btVector3(-5000.0f, 0.0f, 0.0f);
+		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+		btVector3 correctedForce = localRot * relativeForce;
+
+		if (correctedForce.getX() < -MAX_TORQUE)
+			correctedForce.setX(-MAX_TORQUE);
+
+		vehicle->myBody->applyTorque(correctedForce);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) 
 	{
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
 		
-		// Local Force Translation
-		btVector3 relativeForce = btVector3(50000.0f, 0.0f, 0.0f);
-		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-		btVector3 correctedForce = localRot * relativeForce;
-
-		vehicle->myBody->applyTorque(correctedForce);
+		
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
