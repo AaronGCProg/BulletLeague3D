@@ -2,7 +2,7 @@
 
 // Warning disabled ---
 #pragma warning( disable : 4577 ) // Warning that exceptions are disabled
-#pragma warning( disable : 4530 ) // Warning that exceptions are disabled
+#pragma warning( disable : 4530 )
 
 #include <windows.h>
 #include <stdio.h>
