@@ -86,7 +86,7 @@ bool ModulePlayer::Start()
 	car.wheels[0].steering = true;
 
 	// FRONT-RIGHT ------------------------
-	car.wheels[1].connection.Set(-half_width + 0.3f * wheel_width, connection_height, half_length - wheel_radius);
+	car.wheels[1].connection.Set(-half_width + 0.4f * wheel_width, connection_height, half_length - wheel_radius);
 	car.wheels[1].direction = direction;
 	car.wheels[1].axis = axis;
 	car.wheels[1].suspensionRestLength = suspensionRestLength;
@@ -122,7 +122,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 
-
+	canDrift = false;
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
@@ -155,43 +155,64 @@ update_status ModulePlayer::Update(float dt)
 	{
 		acceleration = MAX_ACCELERATION;
 
-
 		vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		if(turn < TURN_DEGREES)
+		if(turn < TURN_DEGREES && !canDrift)
 			turn +=  TURN_DEGREES;
-
+		else if (turn > -TURN_DEGREES && canDrift) 
+		{
+			turn += TURN_DEGREES;
+			
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
+		}
+		vehicle->myBody->applyGravity();
 		vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		if(turn > -TURN_DEGREES)
+		if(turn > -TURN_DEGREES && !canDrift)
 			turn -= TURN_DEGREES;
+		else if (turn > -TURN_DEGREES && canDrift) 
+		{
+			turn -= TURN_DEGREES;
+			
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -10000.0f, 0.0f));
+		}
+			
+		vehicle->myBody->applyGravity();
 
 		vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		brake = BRAKE_POWER;
-
+		acceleration = -MAX_ACCELERATION;
 
 		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
 
-		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
-		
-		
+		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
 	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		brake = BRAKE_POWER;
+		canDrift = true;
+
+		
+
+	}
+	else if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
+		canDrift = false;
+
 
 	if (App->input->GetMouseButton(1) == KEY_REPEAT) 
 	{
