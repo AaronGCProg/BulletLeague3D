@@ -121,7 +121,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].brake = true;
 	car.wheels[3].steering = false;
 
-
+	jumpImpulse = false;
 	canDrift = false;
 
 	vehicle = App->physics->AddVehicle(car);
@@ -169,6 +169,7 @@ update_status ModulePlayer::Update(float dt)
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
 		}
 		vehicle->myBody->applyGravity();
+
 		vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
 	}
 
@@ -195,19 +196,34 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !jumpImpulse)
 	{
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
+		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
+		jumpImpulse = true;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumpImpulse) 
+	{
+
+		/* SECOND JUMP IMPULSE READY
+		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			vehicle->myBody->applyTorque(WorldToLocal(115000.0f, 0.0f, 0.0f));
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			vehicle->myBody->applyTorque(WorldToLocal(-115000.0f, 0.0f, 0.0f));
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 30000.0f));		
+		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -30000.0f));
+		*/
 
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
+		jumpImpulse = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
 		canDrift = true;
-
-		
 
 	}
 	else if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)

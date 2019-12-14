@@ -30,6 +30,7 @@ public:
 	float acceleration;
 	float brake;
 
+	bool jumpImpulse;
 	bool canDrift;
 
 };
