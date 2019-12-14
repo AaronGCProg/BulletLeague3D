@@ -130,7 +130,6 @@ update_status ModuleCamera3D::Update(float dt)
 			////Foward Vehicle Vector
 			dir = normalize(dir);
 
-
 			//float dotProduct = dot(vehicleFw, dir);
 			//float length2vec = length(vehicleFw) * length(dir);
 			//float angle = acos(dotProduct / length2vec);
@@ -140,7 +139,6 @@ update_status ModuleCamera3D::Update(float dt)
 			//rotation2 = newrot,
 
 			//Position = App->player->vehicle->GetPos() + rotation2 * (rotation * distanceFromCar);
-
 
 			dir.Set(dir.x,0.f,dir.z);
 
