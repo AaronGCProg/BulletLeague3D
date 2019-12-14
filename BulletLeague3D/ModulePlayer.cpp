@@ -97,8 +97,8 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 
-	//All chassis parts
-	car.num_chassis = 4;
+	/*//All chassis parts
+	car.num_chassis = 5;
 	car.chassis = new Chassis[4];
 
 	//front mudward
@@ -117,7 +117,9 @@ bool ModulePlayer::Start()
 	car.chassis[3].chassis_offset.Set(0.5, 1.6f, -2.75f);
 
 	car.chassis[4].chassis_size.Set(2.f, 0.2f, 0.4f);
-	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);
+	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);*/
+
+
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 12, 10);
@@ -139,65 +141,37 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
 
 		// Local Force Translation
-		btVector3 relativeForce = btVector3(5000.0f, 0.0f, 0.0f);
-		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-		btVector3 correctedForce = localRot * relativeForce;
 
-		if (correctedForce.getX() >= MAX_TORQUE)
-			correctedForce.setX(MAX_TORQUE);
-
-		vehicle->myBody->applyTorque(correctedForce);
+		vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn +=  TURN_DEGREES;
 
-		btVector3 relativeForce = btVector3(0.0f, 5000.0f, 0.0f);
-		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-		btVector3 correctedForce = localRot * relativeForce;
-
-		if (correctedForce.getY() > MAX_TORQUE)
-			correctedForce.setY(MAX_TORQUE);
-
-		vehicle->myBody->applyTorque(correctedForce);
+		vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		if(turn > -TURN_DEGREES)
 			turn -= TURN_DEGREES;
 
-		// Local Force Translation
-		btVector3 relativeForce = btVector3(0.0f, -5000.0f, 0.0f);
-		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-		btVector3 correctedForce = localRot * relativeForce;
-
-		if (correctedForce.getY() < -MAX_TORQUE)
-			correctedForce.setY(-MAX_TORQUE);
-
-		vehicle->myBody->applyTorque(correctedForce);
+		vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
 
-		// Local Force Translation
-		btVector3 relativeForce = btVector3(-5000.0f, 0.0f, 0.0f);
-		btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-		btVector3 correctedForce = localRot * relativeForce;
 
-		if (correctedForce.getX() < -MAX_TORQUE)
-			correctedForce.setX(-MAX_TORQUE);
-
-		vehicle->myBody->applyTorque(correctedForce);
+		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
@@ -208,6 +182,11 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
 		
 		
+	}
+
+	if (App->input->GetMouseButton(1) == KEY_REPEAT) 
+	{
+		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 100.0f));
 	}
 
 	vehicle->ApplyEngineForce(acceleration);
@@ -223,5 +202,14 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+// World to Local forces translation
+btVector3 ModulePlayer::WorldToLocal(float x, float y, float z) 
+{
+	btVector3 relativeForce = btVector3(x, y, z);
+	btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+	btVector3 correctedForce = localRot * relativeForce;
+
+	return correctedForce;
+}
 
 

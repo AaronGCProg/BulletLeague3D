@@ -21,6 +21,8 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	btVector3 WorldToLocal(float x, float y, float z);
+
 public:
 
 	PhysVehicle3D* vehicle;

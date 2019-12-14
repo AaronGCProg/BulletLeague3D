@@ -334,14 +334,15 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	}
 	// ---------------------
 
-	for (int i = 0; i < info.num_chassis; i++)
+	/*for (int i = 0; i < info.num_chassis; i++)
 	{
-		colShape = new btBoxShape(btVector3(info.chassis[i].chassis_size.x * 0.5f, info.chassis[i].chassis_size.y * 0.5f, info.chassis[i].chassis_size.z * 0.5f));
+		colShape = new btBoxShape(btVector3(info.chassis[i].chassis_size.x, info.chassis[i].chassis_size.y, info.chassis[i].chassis_size.z));
 		shapes.add(colShape);
 
 		trans.setOrigin(btVector3(info.chassis[i].chassis_offset.x, info.chassis[i].chassis_offset.y, info.chassis[i].chassis_offset.z));
 		comShape->addChildShape(trans, colShape);
-	}
+	}*/
+
 
 	PhysVehicle3D* pvehicle = new PhysVehicle3D(body, vehicle, info);
 	world->addVehicle(vehicle);
