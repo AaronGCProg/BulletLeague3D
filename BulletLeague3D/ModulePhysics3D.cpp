@@ -144,6 +144,8 @@ update_status ModulePhysics3D::Update(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PostUpdate(float dt)
 {
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -217,6 +219,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass)
 	world->addRigidBody(body);
 	bodies.add(pbody);
 
+
 	if (matchBall == nullptr)
 		matchBall = pbody;
 
@@ -254,7 +257,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass)
 // ---------------------------------------------------------
 PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass)
 {
-	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 0.0f));
+	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 2000.0f));
 	shapes.add(colShape);
 
 	btTransform startTransform;

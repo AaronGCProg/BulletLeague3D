@@ -18,6 +18,12 @@ PrimitiveTypes Primitive::GetType() const
 }
 
 // ------------------------------------------------------------
+void Primitive::Update()
+{
+	body->GetTransform(&transform);
+}
+
+// ------------------------------------------------------------
 void Primitive::Render() const
 {
 	glPushMatrix();
