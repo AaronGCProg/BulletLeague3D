@@ -112,31 +112,48 @@ update_status ModuleCamera3D::Update(float dt)
 	else
 	{
 		vec3 vehiclePos = App->player->vehicle->GetPos();
+		vec3 vehicleFw = App->player->vehicle->GetFoward();
 		distanceFromCar = { 0,3.5,-7.5f };
+
+		mat4x4 transform;
+
+		App->player->vehicle->GetTransform(&transform);
+
+		mat3x3 rotation(transform);
+
+		mat3x3 rotation2(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
 		if (lookAtBall)
 		{
-			vec3 dir = -App->physics->matchBall->GetPos() + App->player->vehicle->GetPos();
+			vec3 dir = -App->physics->matchBall->GetPos() + vehiclePos;
 
+			////Foward Vehicle Vector
 			dir = normalize(dir);
 
-			Position = vehiclePos + dir;
 
+			//float dotProduct = dot(vehicleFw, dir);
+			//float length2vec = length(vehicleFw) * length(dir);
+			//float angle = acos(dotProduct / length2vec);
+
+			//mat3x3 newrot(vec3(cos(angle), 0, sin(angle)), vec3(0, 1, 0), vec3(-sin(angle), 0, cos(angle)));
+
+			//rotation2 = newrot,
+
+			//Position = App->player->vehicle->GetPos() + rotation2 * (rotation * distanceFromCar);
+
+
+			dir.Set(dir.x,0.f,dir.z);
+
+			Position = App->player->vehicle->GetPos() + dir *-distanceFromCar.z + vec3(0, distanceFromCar.y,0);
 
 			LookAt(App->physics->matchBall->GetPos());
 		}
 		else
 		{
-			mat4x4 transform;
-
-			App->player->vehicle->GetTransform(&transform);
-
-			mat3x3 rotation(transform);
-
 			Position = vehiclePos + rotation * distanceFromCar;
 
 
-			LookAt(App->player->vehicle->GetPos() + vec3(0, 3.5f, 0));
+			LookAt(App->player->vehicle->GetPos() + vec3(0, distanceFromCar.y, 0));
 		}
 	}
 

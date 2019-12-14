@@ -66,7 +66,7 @@ bool ModulePhysics3D::Start()
 		world->addRigidBody(body);
 	}
 
-	Sphere s(1);
+	Sphere s(3);
 	s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 	float force = 5.0f;
 
