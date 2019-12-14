@@ -21,6 +21,31 @@ bool ModulePlayer::Start()
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
+
+
+	//All chassis parts
+	car.num_chassis = 5;
+	car.chassis = new Chassis[car.num_chassis];
+
+	//front mudward
+	car.chassis[0].chassis_size.Set(2, 0.5, 1);
+	car.chassis[0].chassis_offset.Set(0, 1.f, 2.5f);
+
+	//back mudward
+	car.chassis[1].chassis_size.Set(2, 0.5, 1);
+	car.chassis[1].chassis_offset.Set(0, 1.f, -2.5f);
+
+	//spoiler
+	car.chassis[2].chassis_size.Set(0.1f, 0.6f, 0.2f);
+	car.chassis[2].chassis_offset.Set(-0.5, 1.6f, -2.75f);
+
+	car.chassis[3].chassis_size.Set(0.1f, 0.6f, 0.2f);
+	car.chassis[3].chassis_offset.Set(0.5, 1.6f, -2.75f);
+
+	car.chassis[4].chassis_size.Set(2.f, 0.2f, 0.4f);
+	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);
+
+
 	car.chassis_size.Set(2, 1, 4);
 	car.chassis_offset.Set(0, 1, 0);
 	car.mass = 500.0f;
@@ -46,7 +71,7 @@ bool ModulePlayer::Start()
 	vec3 axis(-1, 0, 0);
 
 	car.num_wheels = 4;
-	car.wheels = new Wheel[4];
+	car.wheels = new Wheel[car.num_wheels];
 
 	// FRONT-LEFT ------------------------
 	car.wheels[0].connection.Set(half_width - 0.3f * wheel_width, connection_height, half_length - wheel_radius);
@@ -97,28 +122,6 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 
-	/*//All chassis parts
-	car.num_chassis = 5;
-	car.chassis = new Chassis[4];
-
-	//front mudward
-	car.chassis[0].chassis_size.Set(2, 0.5, 1);
-	car.chassis[0].chassis_offset.Set(0, 1.f, 2.5f);
-
-	//back mudward
-	car.chassis[1].chassis_size.Set(2, 0.5, 1);
-	car.chassis[1].chassis_offset.Set(0, 1.f, -2.5f);
-
-	//spoiler
-	car.chassis[2].chassis_size.Set(0.1f, 0.6f, 0.2f);
-	car.chassis[2].chassis_offset.Set(-0.5, 1.6f, -2.75f);
-
-	car.chassis[3].chassis_size.Set(0.1f, 0.6f, 0.2f);
-	car.chassis[3].chassis_offset.Set(0.5, 1.6f, -2.75f);
-
-	car.chassis[4].chassis_size.Set(2.f, 0.2f, 0.4f);
-	car.chassis[4].chassis_offset.Set(0.f, 2.f, -2.75f);*/
-
 
 
 	vehicle = App->physics->AddVehicle(car);
@@ -145,7 +148,6 @@ update_status ModulePlayer::Update(float dt)
 	{
 		acceleration = MAX_ACCELERATION;
 
-		// Local Force Translation
 
 		vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
