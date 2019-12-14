@@ -17,11 +17,13 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status PostUpdate (float dt);
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 public:
+	p2DynArray<Primitive*> primitives;
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
 	Sphere s_snake[MAX_SNAKE];

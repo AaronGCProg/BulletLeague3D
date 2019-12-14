@@ -2,6 +2,8 @@
 #pragma once
 #include "glmath.h"
 #include "Color.h"
+#include "PhysBody3D.h"
+
 
 enum PrimitiveTypes
 {
@@ -25,12 +27,14 @@ public:
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
+	void			Update();
 
 public:
 	
 	Color color;
 	mat4x4 transform;
 	bool axis,wire;
+	PhysBody3D* body = nullptr;
 
 protected:
 	PrimitiveTypes type;
