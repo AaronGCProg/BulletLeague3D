@@ -46,7 +46,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		cameraDebug = !cameraDebug;
 
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (App->input->GetMouseButton(3) == KEY_DOWN)
 		lookAtBall = !lookAtBall;
 
 	if (cameraDebug)
@@ -121,18 +121,29 @@ update_status ModuleCamera3D::Update(float dt)
 
 		mat3x3 rotation(transform);
 
-		mat3x3 rotation2(1, 0, 0, 0, 1, 0, 0, 0, 1);
-
 		if (lookAtBall)
 		{
-			vec3 dir = -App->physics->matchBall->GetPos() + vehiclePos;
+			vec3 dir = vehiclePos -App->physics->matchBall->GetPos();
+
+			if (length(dir) < 10)
+			{
+				if(multiplier < 1.5f)
+				multiplier += 0.0125f;
+			}
+			else
+			{
+				if(multiplier > 1.0f)
+				multiplier -= 0.025f;
+			}
 
 			////Foward Vehicle Vector
 			dir = normalize(dir);
 
-			//float dotProduct = dot(vehicleFw, dir);
-			//float length2vec = length(vehicleFw) * length(dir);
-			//float angle = acos(dotProduct / length2vec);
+			//vehiclePos = normalize(vehiclePos);
+
+			//btVector3 fw = { vehiclePos.x, vehiclePos.y, vehiclePos.z };
+			//btVector3 dir2 = { dir.x, dir.y, dir.z };
+			//float angle = btAngle(dir2, fw);
 
 			//mat3x3 newrot(vec3(cos(angle), 0, sin(angle)), vec3(0, 1, 0), vec3(-sin(angle), 0, cos(angle)));
 
@@ -142,16 +153,23 @@ update_status ModuleCamera3D::Update(float dt)
 
 			dir.Set(dir.x,0.f,dir.z);
 
-			Position = App->player->vehicle->GetPos() + dir *-distanceFromCar.z + vec3(0, distanceFromCar.y,0);
+			newpos = vehiclePos + dir * -distanceFromCar.z * multiplier + vec3(0, distanceFromCar.y, 0);
+
+			btVector3 interpolVec = lerp({ Position.x, Position.y, Position.z }, { newpos.x, newpos.y, newpos.z }, 0.15);
+
+			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
 
 			LookAt(App->physics->matchBall->GetPos());
 		}
 		else
 		{
-			Position = vehiclePos + rotation * distanceFromCar;
+			newpos = vehiclePos + rotation * distanceFromCar;
 
+			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, 0.15);
 
-			LookAt(App->player->vehicle->GetPos() + vec3(0, distanceFromCar.y, 0));
+			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
+
+			LookAt(vehiclePos + vec3(0, distanceFromCar.y, 0));
 		}
 	}
 

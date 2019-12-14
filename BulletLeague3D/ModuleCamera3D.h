@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "glmath.h"
 
+#include "Bullet/include/LinearMath/btVector3.h"
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -24,10 +26,13 @@ private:
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference, distanceFromCar;
+	vec3 X, Y, Z, Position, Reference, distanceFromCar, newpos;
+
 
 	bool cameraDebug = false;
 	bool lookAtBall = false;
+	float multiplier = 1.0f;
+
 
 private:
 
