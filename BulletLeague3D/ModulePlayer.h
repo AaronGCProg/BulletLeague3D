@@ -7,7 +7,7 @@ struct PhysVehicle3D;
 
 #define MAX_ACCELERATION 1000.0f
 #define TURN_DEGREES 15.0f * DEGTORAD
-#define BRAKE_POWER 1000.0f
+#define BRAKE_POWER 100.0f
 #define JUMP_FORCE 4000.0f
 #define MAX_TORQUE 2000.0f
 
@@ -29,5 +29,7 @@ public:
 	float turn;
 	float acceleration;
 	float brake;
+
+	bool canDrift;
 
 };
