@@ -150,7 +150,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 			newpos = vehiclePos + dir * -distanceFromCar.z * multiplier + vec3(0, distanceFromCar.y, 0);
 
-			btVector3 interpolVec = lerp({ Position.x, Position.y, Position.z }, { newpos.x, newpos.y, newpos.z }, 0.15);
+			btVector3 interpolVec = lerp({ Position.x, Position.y, Position.z }, { newpos.x, newpos.y, newpos.z }, 0.25);
 
 			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
 
@@ -158,15 +158,27 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 		else
 		{
-			mat4x4 transform;
-			App->player->vehicle->GetTransform(&transform);
-			mat3x3 rotation(transform);
+			if (App->player->wallContact[CNT_GROUND])
+			{
+				mat4x4 transform;
+				App->player->vehicle->GetTransform(&transform);
+				mat3x3 rotationLocal(transform);
 
-			newpos = vehiclePos + rotation * distanceFromCar;
+				newpos = vehiclePos + rotationLocal * distanceFromCar;
 
-			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, 0.15);
+				rotation = rotationLocal;
+			}
+			else
+			{
+				newpos = vehiclePos + rotation * distanceFromCar;
+			}
+
+
+			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, 0.25);
 
 			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
+
+
 
 			LookAt(vehiclePos + vec3(0, distanceFromCar.y, 0));
 		}
@@ -231,4 +243,10 @@ void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
+}
+
+// -----------------------------------------------------------------
+vec3 ModuleCamera3D::GetCameraPosition()
+{
+	return Position;
 }

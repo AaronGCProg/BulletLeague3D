@@ -78,6 +78,12 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->AddBody(*cell, 0);
 
+	//UI -------------------------------------------------------
+	turboUI = new Cube(0.1, 0.5, 0.1);
+
+	turboUI->color.Set(0.f / 255.f, 255.f / 255.f, 234.f / 255.f);
+
+	primitives.PushBack(turboUI);
 
 
 	bool ret = true;
@@ -122,6 +128,11 @@ update_status ModuleSceneIntro::Update(float dt)
 		if(primitives[n]->body != nullptr)
 		primitives[n]->Update();
 	}
+
+
+
+	//vec3 camPos = App->camera->GetCameraPosition();
+	//turboUI->SetPos(camPos.x, camPos.y, camPos.z);
 
 	return UPDATE_CONTINUE;
 }

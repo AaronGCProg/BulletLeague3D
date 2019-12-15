@@ -19,6 +19,8 @@ public:
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
+	vec3 GetCameraPosition();
+
 
 private:
 
@@ -27,7 +29,7 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference, distanceFromCar, newpos;
-
+	mat3x3 rotation;
 
 	bool cameraDebug = false;
 	bool lookAtBall = false;
