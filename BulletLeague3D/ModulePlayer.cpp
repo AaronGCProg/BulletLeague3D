@@ -195,7 +195,7 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
-		acceleration = -MAX_ACCELERATION;
+		acceleration = -MAX_ACCELERATION ;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND] && !jumpImpulse)
 	{
@@ -207,21 +207,35 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
 		wallContact[CNT_GROUND] = false;
-		jumpImpulse = true;
+		
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumpImpulse) 
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !jumpImpulse)
 	{			
-		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
+		jumpImpulse = true;
+		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
 			
 	
-		if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+		{
+			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, 300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(115000.0f, 0.0f, 0.0f));
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		}		
+		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
+		{
+			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, -300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(-115000.0f, 0.0f, 0.0f));
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 30000.0f));		
+		}		
+		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+		{
+			vehicle->myBody->applyCentralForce(WorldToLocal(-300000.0f, 0.0f, 0.0f));
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 45000.0f));
+		}			
 		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
-			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -30000.0f));
+		{
+			vehicle->myBody->applyCentralForce(WorldToLocal(300000.0f, 0.0f, 0.0f));
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -45000.0f));
+		}
+			
 	
 	}
 
