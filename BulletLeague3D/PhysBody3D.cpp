@@ -3,7 +3,10 @@
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // =================================================
-PhysBody3D::PhysBody3D(btRigidBody* body) : body(body)
+PhysBody3D::PhysBody3D(btRigidBody* body) : body(body), cntType(CNT_UNKNOWN)
+{}
+
+PhysBody3D::PhysBody3D(btRigidBody* body, ContactType type) : body(body), cntType(type)
 {}
 
 // ---------------------------------------------------------

@@ -34,7 +34,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0);
+	groundBody = App->physics->AddBody(*ground,0);
 
 
 	//Field walls----------------------------------------------

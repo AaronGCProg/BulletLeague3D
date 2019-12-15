@@ -112,14 +112,9 @@ update_status ModuleCamera3D::Update(float dt)
 	else
 	{
 		vec3 vehiclePos = App->player->vehicle->GetPos();
-		vec3 vehicleFw = App->player->vehicle->GetFoward();
 		distanceFromCar = { 0,3.5,-7.5f };
 
-		mat4x4 transform;
 
-		App->player->vehicle->GetTransform(&transform);
-
-		mat3x3 rotation(transform);
 
 		if (lookAtBall)
 		{
@@ -163,6 +158,10 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 		else
 		{
+			mat4x4 transform;
+			App->player->vehicle->GetTransform(&transform);
+			mat3x3 rotation(transform);
+
 			newpos = vehiclePos + rotation * distanceFromCar;
 
 			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, 0.15);

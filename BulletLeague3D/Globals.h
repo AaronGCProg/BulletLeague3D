@@ -27,6 +27,20 @@ enum update_status
 	UPDATE_ERROR
 };
 
+enum ContactType
+{
+	CNT_UNKNOWN = -1,
+
+	CNT_GROUND,
+	CNT_CELLING,
+	CNT_LEFT_WALL,
+	CNT_RIGHT_WALL,
+	CNT_BLUE_WALL,
+	CNT_ORANGE_WALL,
+
+	CNT_MAX
+};
+
 // Configuration -----------
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 1024

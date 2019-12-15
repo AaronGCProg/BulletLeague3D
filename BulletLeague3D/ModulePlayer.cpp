@@ -126,6 +126,7 @@ bool ModulePlayer::Start()
 	canDrift = false;
 
 	vehicle = App->physics->AddVehicle(car);
+	vehicle->collision_listeners.add(this);
 	vehicle->SetPos(0, 12, 10);
 
 
@@ -213,6 +214,7 @@ update_status ModulePlayer::Update(float dt)
 
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
 		jumpImpulse = false;
+		wallContact[CNT_GROUND] = false;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -253,4 +255,11 @@ btVector3 ModulePlayer::WorldToLocal(float x, float y, float z)
 	return correctedForce;
 }
 
+
+void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+{
+	if (body2 == App->scene_intro->groundBody)
+		wallContact[CNT_GROUND] = true;
+
+}
 

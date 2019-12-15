@@ -11,6 +11,8 @@ struct PhysVehicle3D;
 #define JUMP_FORCE 4000.0f
 #define MAX_TORQUE 2000.0f
 
+
+
 class ModulePlayer : public Module
 {
 public:
@@ -22,6 +24,7 @@ public:
 	bool CleanUp();
 
 	btVector3 WorldToLocal(float x, float y, float z);
+	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 public:
 
@@ -32,5 +35,7 @@ public:
 
 	bool jumpImpulse;
 	bool canDrift;
+
+	bool wallContact[CNT_MAX] = { false };
 
 };

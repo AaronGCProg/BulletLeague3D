@@ -8,12 +8,16 @@ class btRigidBody;
 class Module;
 
 
+
+
+
 // =================================================
 struct PhysBody3D
 {
 	friend class ModulePhysics3D;
 public:
 	PhysBody3D(btRigidBody* body);
+	PhysBody3D(btRigidBody* body, ContactType type);
 	~PhysBody3D();
 
 	void Push(float x, float y, float z);
@@ -22,6 +26,8 @@ public:
 	void SetPos(float x, float y, float z);
 	vec3 GetPos() const;
 	vec3 GetFoward();
+
+	ContactType cntType;
 
 private:
 	btRigidBody* body = nullptr;
