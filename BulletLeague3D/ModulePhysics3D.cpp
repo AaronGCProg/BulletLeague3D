@@ -245,7 +245,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, ContactType t
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
+	PhysBody3D* pbody = new PhysBody3D(body, type);
 
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
@@ -272,7 +272,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass, Conta
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
-	PhysBody3D* pbody = new PhysBody3D(body);
+	PhysBody3D* pbody = new PhysBody3D(body, type);
 
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
