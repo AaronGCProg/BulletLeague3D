@@ -167,7 +167,7 @@ update_status ModulePlayer::Update(float dt)
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
 	
-		if(vehicle->myBody->getAngularVelocity().getX() < 2.0f)
+		if(vehicle->myBody->getAngularVelocity().getX() < MAX_ACROBATIC_SPEED)
 			vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
 
@@ -190,14 +190,14 @@ update_status ModulePlayer::Update(float dt)
 
 		if (secondJump) 
 		{
-			if (vehicle->myBody->getAngularVelocity().getZ() > -2.0f)
+			if (vehicle->myBody->getAngularVelocity().getZ() > -MAX_ACROBATIC_SPEED)
 				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -500.0f));
 		
 		}
 		else 
 		{
 
-			if (vehicle->myBody->getAngularVelocity().getY() < 2.0f)
+			if (vehicle->myBody->getAngularVelocity().getY() < MAX_ACROBATIC_SPEED)
 				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
 		}
 			
@@ -223,13 +223,13 @@ update_status ModulePlayer::Update(float dt)
 		if (secondJump) 
 		{
 
-			if (vehicle->myBody->getAngularVelocity().getZ() < 2.0f)
+			if (vehicle->myBody->getAngularVelocity().getZ() < MAX_ACROBATIC_SPEED)
 				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 500.0f));
 		}			
 		else 
 		{
 		
-			if (vehicle->myBody->getAngularVelocity().getY() > -2.0f)
+			if (vehicle->myBody->getAngularVelocity().getY() > -MAX_ACROBATIC_SPEED)
 				vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
 
 		}
@@ -240,11 +240,12 @@ update_status ModulePlayer::Update(float dt)
 	{
 		acceleration = -MAX_ACCELERATION ;
 
-		vehicle->Push(0.0f, -STICK_FORCE / 2, 0.0f);
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
+		if (vehicle->myBody->getAngularVelocity().getX() > -MAX_ACROBATIC_SPEED)
+			vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && wallContact[CNT_GROUND])
