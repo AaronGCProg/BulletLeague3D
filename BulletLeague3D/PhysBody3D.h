@@ -29,7 +29,8 @@ public:
 	void SetAsSensor(bool IsSensor);
 
 	ContactType cntType;
-	bool is_sensor;
+	bool is_sensor, sensorOnline;
+	float innerSensorTimer;
 
 private:
 	btRigidBody* body = nullptr;
