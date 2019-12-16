@@ -211,27 +211,31 @@ update_status ModulePlayer::Update(float dt)
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !jumpImpulse)
 	{			
-		jumpImpulse = true;
+		
 		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
 			
 	
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
 		{
+			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, 300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(115000.0f, 0.0f, 0.0f));
 		}		
 		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
 		{
+			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, -300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(-115000.0f, 0.0f, 0.0f));
 		}		
 		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 		{
+			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(-300000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 45000.0f));
 		}			
 		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 		{
+			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(300000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -45000.0f));
 		}
