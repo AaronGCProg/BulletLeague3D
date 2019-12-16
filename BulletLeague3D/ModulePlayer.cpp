@@ -191,7 +191,7 @@ update_status ModulePlayer::Update(float dt)
 		if (secondJump) 
 		{
 			if (vehicle->myBody->getAngularVelocity().getZ() > -MAX_ACROBATIC_SPEED)
-				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -500.0f));
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -5000.0f));
 		
 		}
 		else 
@@ -224,7 +224,7 @@ update_status ModulePlayer::Update(float dt)
 		{
 
 			if (vehicle->myBody->getAngularVelocity().getZ() < MAX_ACROBATIC_SPEED)
-				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 500.0f));
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 5000.0f));
 		}			
 		else 
 		{
