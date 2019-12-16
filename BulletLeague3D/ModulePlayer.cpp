@@ -195,16 +195,20 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->myBody->applyGravity();
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact[CNT_GROUND] && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
+
+		if(secondJump)
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 5000.0f));
+		else
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
 		acceleration = -MAX_ACCELERATION ;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND] && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
 		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
