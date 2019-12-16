@@ -134,7 +134,7 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
 	vehicle->cntType = CNT_VEHICLE;
-	vehicle->SetPos(0, 8, -170);
+	vehicle->SetPos(0, 8, -160);
 
 
 

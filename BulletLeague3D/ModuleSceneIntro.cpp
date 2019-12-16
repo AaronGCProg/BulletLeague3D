@@ -395,6 +395,133 @@ bool ModuleSceneIntro::Start()
 
 	}
 
+	//Between Goal-Mid Field (Blue Side)
+	{
+		Cube* little_Pag_GMB_Left = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMB_Left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMB_Left->SetPos(-25, 6.5f, -60);
+
+		primitives.PushBack(little_Pag_GMB_Left);
+
+		little_Pag_GMB_Left->body = App->physics->AddBody(*little_Pag_GMB_Left, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMB_Left->body->SetAsSensor(true);
+		little_Pag_GMB_Left->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMB_mid_left = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMB_mid_left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMB_mid_left->SetPos(-15, 6.5f, -100);
+
+		primitives.PushBack(little_Pag_GMB_mid_left);
+
+		little_Pag_GMB_mid_left->body = App->physics->AddBody(*little_Pag_GMB_mid_left, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMB_mid_left->body->SetAsSensor(true);
+		little_Pag_GMB_mid_left->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMB_mid = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMB_mid->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMB_mid->SetPos(0, 6.5f, -130);
+
+		primitives.PushBack(little_Pag_GMB_mid);
+
+		little_Pag_GMB_mid->body = App->physics->AddBody(*little_Pag_GMB_mid, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMB_mid->body->SetAsSensor(true);
+		little_Pag_GMB_mid->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMB_mid_right = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMB_mid_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMB_mid_right->SetPos(15, 6.5f, -100);
+
+		primitives.PushBack(little_Pag_GMB_mid_right);
+
+		little_Pag_GMB_mid_right->body = App->physics->AddBody(*little_Pag_GMB_mid_right, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMB_mid_right->body->SetAsSensor(true);
+		little_Pag_GMB_mid_right->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMB_right = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMB_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMB_right->SetPos(25, 6.5f, -60);
+
+		primitives.PushBack(little_Pag_GMB_right);
+
+		little_Pag_GMB_right->body = App->physics->AddBody(*little_Pag_GMB_right, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMB_right->body->SetAsSensor(true);
+		little_Pag_GMB_right->body->collision_listeners.add(this);
+
+	}
+
+
+	//Between Goal-Mid Field (Orange Side)
+	{
+		Cube* little_Pag_GMO_Left = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMO_Left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMO_Left->SetPos(-25, 6.5f, 60);
+
+		primitives.PushBack(little_Pag_GMO_Left);
+
+		little_Pag_GMO_Left->body = App->physics->AddBody(*little_Pag_GMO_Left, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMO_Left->body->SetAsSensor(true);
+		little_Pag_GMO_Left->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMO_mid_left = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMO_mid_left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMO_mid_left->SetPos(-15, 6.5f, 100);
+
+		primitives.PushBack(little_Pag_GMO_mid_left);
+
+		little_Pag_GMO_mid_left->body = App->physics->AddBody(*little_Pag_GMO_mid_left, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMO_mid_left->body->SetAsSensor(true);
+		little_Pag_GMO_mid_left->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMO_mid = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMO_mid->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMO_mid->SetPos(0, 6.5f, 130);
+
+		primitives.PushBack(little_Pag_GMO_mid);
+
+		little_Pag_GMO_mid->body = App->physics->AddBody(*little_Pag_GMO_mid, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMO_mid->body->SetAsSensor(true);
+		little_Pag_GMO_mid->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMO_mid_right = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMO_mid_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMO_mid_right->SetPos(15, 6.5f, 100);
+
+		primitives.PushBack(little_Pag_GMO_mid_right);
+
+		little_Pag_GMO_mid_right->body = App->physics->AddBody(*little_Pag_GMO_mid_right, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMO_mid_right->body->SetAsSensor(true);
+		little_Pag_GMO_mid_right->body->collision_listeners.add(this);
+
+
+		Cube* little_Pag_GMO_right = new Cube(1, 0.25f, 1);
+
+		little_Pag_GMO_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
+		little_Pag_GMO_right->SetPos(25, 6.5f, 60);
+
+		primitives.PushBack(little_Pag_GMO_right);
+
+		little_Pag_GMO_right->body = App->physics->AddBody(*little_Pag_GMO_right, 0, CNT_LITTLE_BOOST);
+		little_Pag_GMO_right->body->SetAsSensor(true);
+		little_Pag_GMO_right->body->collision_listeners.add(this);
+
+	}
+
 
 	bool ret = true;
 
