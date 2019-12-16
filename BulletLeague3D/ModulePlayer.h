@@ -12,6 +12,7 @@ struct PhysVehicle3D;
 #define JUMP_FORCE 4000.0f
 #define IMPULSE_FORCE 2000.0f
 #define MAX_TORQUE 2000.0f
+#define STICK_FORCE 10.0f
 
 
 

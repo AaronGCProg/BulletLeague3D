@@ -161,6 +161,8 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
 		acceleration = MAX_ACCELERATION;		
+
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
@@ -179,7 +181,8 @@ update_status ModulePlayer::Update(float dt)
 			
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
 		}
-		vehicle->myBody->applyGravity();
+
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact[CNT_GROUND])
@@ -211,7 +214,7 @@ update_status ModulePlayer::Update(float dt)
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -10000.0f, 0.0f));
 		}
 			
-		vehicle->myBody->applyGravity();
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact[CNT_GROUND])
@@ -236,6 +239,8 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
 		acceleration = -MAX_ACCELERATION ;
+
+		vehicle->Push(0.0f, -STICK_FORCE / 2, 0.0f);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
