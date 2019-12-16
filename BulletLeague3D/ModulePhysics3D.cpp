@@ -326,6 +326,8 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 
 	vehicle->setCoordinateSystem(0, 1, 2);
 
+	// ---------------------
+
 	for(int i = 0; i < info.num_wheels; ++i)
 	{
 		btVector3 conn(info.wheels[i].connection.x, info.wheels[i].connection.y, info.wheels[i].connection.z);
@@ -334,6 +336,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 
 		vehicle->addWheel(conn, dir, axis, info.wheels[i].suspensionRestLength, info.wheels[i].radius, tuning, info.wheels[i].front);
 	}
+
 	// ---------------------
 
 	for (int i = 0; i < info.num_chassis; i++)
@@ -344,7 +347,10 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 		trans.setOrigin(btVector3(info.chassis[i].chassis_offset.x, info.chassis[i].chassis_offset.y, info.chassis[i].chassis_offset.z));
 		comShape->addChildShape(trans, colShape);
 	}
-
+	
+	
+	// ---------------------
+	
 
 	PhysVehicle3D* pvehicle = new PhysVehicle3D(body, vehicle, info);
 	body->setUserPointer(pvehicle);

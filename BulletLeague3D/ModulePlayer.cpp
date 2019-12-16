@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModulePlayer.h"
 #include "Primitive.h"
-#include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"
 
@@ -19,9 +18,13 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	VehicleInfo car;
+	
 
 	// Car properties ----------------------------------------
+
+	car.sensor = new Cube(0.2f, 0.2f, 0.2f);
+	App->physics->AddBody(*car.sensor, 0, CNT_GROUND)->SetAsSensor(true);
+	App->scene_intro->primitives.PushBack(car.sensor);
 
 
 	//All chassis parts
@@ -124,6 +127,9 @@ bool ModulePlayer::Start()
 
 	jumpImpulse = false;
 	canDrift = false;
+	secondJump = false;
+
+	
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
@@ -148,6 +154,9 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
+
+	car.sensor->SetPos(vehicle->GetPos().x, vehicle->GetPos().y, vehicle->GetPos().z);
+
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
@@ -211,9 +220,10 @@ update_status ModulePlayer::Update(float dt)
 		wallContact[CNT_GROUND] = false;
 		
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !secondJump)
 	{			
-		
+		secondJump = true;
+
 		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
 			
 	
@@ -289,6 +299,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body2->cntType == CNT_GROUND) 
 	{
 		wallContact[CNT_GROUND] = true;
+		secondJump = false;
 		jumpImpulse = false;
 	}
 		
