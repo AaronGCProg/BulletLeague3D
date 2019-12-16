@@ -3,10 +3,10 @@
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // =================================================
-PhysBody3D::PhysBody3D(btRigidBody* body) : body(body), cntType(CNT_UNKNOWN)
+PhysBody3D::PhysBody3D(btRigidBody* body) : body(body), cntType(CNT_UNKNOWN), innerSensorTimer(0.0f), is_sensor(false)
 {}
 
-PhysBody3D::PhysBody3D(btRigidBody* body, ContactType type) : body(body), cntType(type)
+PhysBody3D::PhysBody3D(btRigidBody* body, ContactType type) : body(body), cntType(type), innerSensorTimer(0.0f), is_sensor(false)
 {}
 
 // ---------------------------------------------------------
@@ -86,7 +86,9 @@ void PhysBody3D::SetAsSensor(bool is_sensor)
 	{
 		this->is_sensor = is_sensor;
 		if (is_sensor == true)
+		{
 			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+		}
 		else
 			body->setCollisionFlags(body->getCollisionFlags() & ~btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	}

@@ -120,6 +120,7 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			vec3 dir = vehiclePos -App->physics->matchBall->GetPos();
 
+			//Check if the cam is too close to the ball
 			if (length(dir) < 10)
 			{
 				if(multiplier < 1.5f)
@@ -133,18 +134,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 			////Foward Vehicle Vector
 			dir = normalize(dir);
-
-			//vehiclePos = normalize(vehiclePos);
-
-			//btVector3 fw = { vehiclePos.x, vehiclePos.y, vehiclePos.z };
-			//btVector3 dir2 = { dir.x, dir.y, dir.z };
-			//float angle = btAngle(dir2, fw);
-
-			//mat3x3 newrot(vec3(cos(angle), 0, sin(angle)), vec3(0, 1, 0), vec3(-sin(angle), 0, cos(angle)));
-
-			//rotation2 = newrot,
-
-			//Position = App->player->vehicle->GetPos() + rotation2 * (rotation * distanceFromCar);
 
 			dir.Set(dir.x,0.f,dir.z);
 

@@ -12,7 +12,8 @@ enum PrimitiveTypes
 	Primitive_Plane,
 	Primitive_Cube,
 	Primitive_Sphere,
-	Primitive_Cylinder
+	Primitive_Cylinder,
+	Primitive_Sensor
 };
 
 class Primitive
@@ -49,6 +50,8 @@ public :
 	void InnerRender() const;
 public:
 	vec3 size;
+	bool isActivated;
+	float innerTimer;
 };
 
 // ============================================
