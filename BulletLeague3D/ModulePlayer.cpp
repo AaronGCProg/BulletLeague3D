@@ -166,8 +166,8 @@ update_status ModulePlayer::Update(float dt)
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact[CNT_GROUND])
 	{
-
-		if(vehicle->myBody->getAngularVelocity().getX() < 10.0f)
+	
+		if(vehicle->myBody->getAngularVelocity().getX() < 2.0f)
 			vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
 
@@ -191,7 +191,7 @@ update_status ModulePlayer::Update(float dt)
 		if (secondJump) 
 		{
 			if (vehicle->myBody->getAngularVelocity().getZ() > -2.0f)
-				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -5000.0f));
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -500.0f));
 		
 		}
 		else 
@@ -224,7 +224,7 @@ update_status ModulePlayer::Update(float dt)
 		{
 
 			if (vehicle->myBody->getAngularVelocity().getZ() < 2.0f)
-				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 5000.0f));
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 500.0f));
 		}			
 		else 
 		{
@@ -311,7 +311,8 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
+	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f X , %.1f Y, %.1f Z", vehicle->GetKmh(), 
+		vehicle->myBody->getAngularVelocity().getX(), vehicle->myBody->getAngularVelocity().getY(), vehicle->myBody->getAngularVelocity().getZ());
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
