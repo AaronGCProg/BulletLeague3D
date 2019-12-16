@@ -26,8 +26,10 @@ public:
 	void SetPos(float x, float y, float z);
 	vec3 GetPos() const;
 	vec3 GetFoward();
+	void SetAsSensor(bool IsSensor);
 
 	ContactType cntType;
+	bool is_sensor;
 
 private:
 	btRigidBody* body = nullptr;

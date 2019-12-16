@@ -26,9 +26,6 @@ public:
 	//----------PRIMITIVES---------------//
 	p2DynArray<Primitive*> primitives;
 
-	Primitive* turboUI;
-
-
 	//---------------VEHICLE--------------//
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
