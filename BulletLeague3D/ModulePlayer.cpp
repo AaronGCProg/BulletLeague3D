@@ -127,6 +127,7 @@ bool ModulePlayer::Start()
 
 	jumpImpulse = false;
 	canDrift = false;
+	secondJump = false;
 
 	
 
@@ -215,9 +216,10 @@ update_status ModulePlayer::Update(float dt)
 		wallContact[CNT_GROUND] = false;
 		
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !secondJump)
 	{			
-		
+		secondJump = true;
+
 		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
 			
 	
@@ -293,6 +295,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	if (body2->cntType == CNT_GROUND) 
 	{
 		wallContact[CNT_GROUND] = true;
+		secondJump = false;
 		jumpImpulse = false;
 	}
 		

@@ -37,6 +37,7 @@ public:
 	float brake;
 
 	bool jumpImpulse;
+	bool secondJump;
 	bool canDrift;
 
 	bool wallContact[CNT_MAX] = { false };
