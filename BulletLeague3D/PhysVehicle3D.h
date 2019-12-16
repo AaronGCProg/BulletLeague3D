@@ -2,6 +2,7 @@
 
 #include "PhysBody3D.h"
 #include "glmath.h"
+#include "Primitive.h"
 
 class btRaycastVehicle;
 struct PhysBody3D;
@@ -27,6 +28,7 @@ struct Chassis
 
 };
 
+
 struct VehicleInfo
 {
 	~VehicleInfo();
@@ -42,7 +44,9 @@ struct VehicleInfo
 	float maxSuspensionForce; // defaults to 6000 / max force to the chassis
 
 	Wheel* wheels;
+	Cube* sensor;
 	Chassis* chassis;
+	
 	int num_wheels;
 	int num_chassis;
 };

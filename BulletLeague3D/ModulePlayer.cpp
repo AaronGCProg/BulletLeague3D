@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModulePlayer.h"
 #include "Primitive.h"
-#include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"
 
@@ -19,9 +18,13 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	VehicleInfo car;
+	
 
 	// Car properties ----------------------------------------
+
+	car.sensor = new Cube(0.2f, 0.2f, 0.2f);
+	App->physics->AddBody(*car.sensor, 0, CNT_GROUND)->SetAsSensor(true);
+	App->scene_intro->primitives.PushBack(car.sensor);
 
 
 	//All chassis parts
@@ -125,11 +128,11 @@ bool ModulePlayer::Start()
 	jumpImpulse = false;
 	canDrift = false;
 
+	
+
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
 	vehicle->SetPos(0, 12, 10);
-
-
 	
 	return true;
 }
@@ -146,6 +149,9 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
+
+	car.sensor->SetPos(vehicle->GetPos().x, vehicle->GetPos().y, vehicle->GetPos().z);
+
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact[CNT_GROUND])
 	{
