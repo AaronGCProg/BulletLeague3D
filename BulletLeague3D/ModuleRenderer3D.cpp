@@ -190,7 +190,7 @@ void ModuleRenderer3D::OnResize()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, width / height, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(50.0f, width / height, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);

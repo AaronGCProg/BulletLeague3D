@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
+#include "PhysVehicle3D.h"
 
 #include "Bullet/include/LinearMath/btVector3.h"
 #include "SDL/include/SDL_rect.h"
@@ -38,8 +39,9 @@ public:
 	bool lookAtBall = false;
 	float multiplier = 1.0f;
 
-	uint cameraNum = 0u;
+	int cameraNum = 0;
 	SDL_Rect camViewPort;
+	PhysVehicle3D* target_vehicle = nullptr;
 
 private:
 

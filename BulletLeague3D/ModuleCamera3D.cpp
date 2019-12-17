@@ -21,21 +21,19 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled, uint camNum
 
 	camViewPort = { 0,0,0,0 };
 
-
 	switch (this->cameraNum) {
 
 	case 1:
-		camViewPort.x = 0.0f;
-		camViewPort.y = 0.0f;
+		camViewPort.x = 0;
+		camViewPort.y = 0;
 		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
 		camViewPort.h = App->window->SCREEN_HEIGHT;
 		break;
 	case 2:
 		camViewPort.x = App->window->SCREEN_WIDTH * 0.5f;
-		camViewPort.y = 0.0f;
+		camViewPort.y = 0;
 		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
 		camViewPort.h = App->window->SCREEN_HEIGHT;
-
 		break;
 	}
 }
@@ -48,6 +46,13 @@ bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
+
+
+
+	if(cameraNum == 1)
+		this->target_vehicle = App->player->vehicle;
+	else
+		this->target_vehicle = App->player_2->vehicle;
 
 	return ret;
 }
@@ -134,10 +139,8 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	else
 	{
-		vec3 vehiclePos = App->player->vehicle->GetPos();
+		vec3 vehiclePos = target_vehicle->GetPos();
 		distanceFromCar = { 0,3.5,-7.5f };
-
-
 
 		if (lookAtBall)
 		{
@@ -173,7 +176,7 @@ update_status ModuleCamera3D::Update(float dt)
 			if (App->player->wallContact)
 			{
 				mat4x4 transform;
-				App->player->vehicle->GetTransform(&transform);
+				target_vehicle->GetTransform(&transform);
 				mat3x3 rotationLocal(transform);
 
 				newpos = vehiclePos + rotationLocal * distanceFromCar;

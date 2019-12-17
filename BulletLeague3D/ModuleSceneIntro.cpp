@@ -556,15 +556,15 @@ bool ModuleSceneIntro::Draw()
 		primitives[n]->Render();
 	}
 
+	Plane p(0, 1, 0, 0);
+	p.axis = true;
+	p.Render();
+
 	return true;
 }
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
-
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
 		if (primitives[n]->body != nullptr)
