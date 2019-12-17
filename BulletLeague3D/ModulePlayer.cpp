@@ -140,6 +140,14 @@ bool ModulePlayer::Start()
 	else
 	{
 		vehicle->SetPos(0, 6, 160);
+
+		mat4x4 trans;
+		vehicle->GetTransform(&trans);
+
+		trans.rotate(180, {0, -1, 0});
+
+		vehicle->SetTransform(&trans);
+
 	}
 
 
