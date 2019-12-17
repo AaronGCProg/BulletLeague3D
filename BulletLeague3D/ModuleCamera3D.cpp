@@ -47,12 +47,15 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	switch (this->cameraNum) {
 
-
-	if(cameraNum == 1)
-		this->target_vehicle = App->player->vehicle;
-	else
-		this->target_vehicle = App->player_2->vehicle;
+	case 1:
+		target_vehicle = App->player->vehicle;
+		break;
+	case 2:
+		target_vehicle = App->player_2->vehicle;
+		break;
+	}
 
 	return ret;
 }

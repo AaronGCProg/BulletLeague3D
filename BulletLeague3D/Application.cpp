@@ -10,8 +10,8 @@ Application::Application()
 	camera = new ModuleCamera3D(this, true, 1);
 	camera_2 = new ModuleCamera3D(this, true, 2);
 	physics = new ModulePhysics3D(this);
-	player = new ModulePlayer(this);
-	player_2 = new ModulePlayer(this);
+	player = new ModulePlayer(this, true, 1);
+	player_2 = new ModulePlayer(this, true, 2);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order

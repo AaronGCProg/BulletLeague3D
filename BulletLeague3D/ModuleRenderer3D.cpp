@@ -133,7 +133,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	while (item != NULL)
 	{
 		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(App->camera->GetViewMatrix());
+		glLoadMatrixf(item->data->GetViewMatrix());
 
 		SDL_Rect viewport = item->data->getViewPort();
 		glViewport(viewport.x, viewport.y, viewport.w, viewport.h);

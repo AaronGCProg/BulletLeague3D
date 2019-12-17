@@ -22,7 +22,7 @@ struct PhysVehicle3D;
 class ModulePlayer : public Module
 {
 public:
-	ModulePlayer(Application* app, bool start_enabled = true);
+	ModulePlayer(Application* app, bool start_enabled = true, int playerNum = 0);
 	virtual ~ModulePlayer();
 
 	bool Start();
@@ -47,5 +47,7 @@ public:
 	bool canDrift;
 
 	bool wallContact;
+
+	int playerNum;
 
 };

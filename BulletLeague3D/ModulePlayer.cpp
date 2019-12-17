@@ -5,7 +5,7 @@
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"
 
-ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
+ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) : Module(app, start_enabled), vehicle(NULL), playerNum(playerNum)
 {
 	turn = acceleration = brake = 0.0f;
 }
@@ -133,7 +133,15 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
 	vehicle->cntType = CNT_VEHICLE;
-	vehicle->SetPos(0, 6, -160);
+	if (playerNum == 1)
+	{
+		vehicle->SetPos(0, 6, -160);
+	}
+	else
+	{
+		vehicle->SetPos(0, 6, 160);
+	}
+
 
 	return true;
 }
