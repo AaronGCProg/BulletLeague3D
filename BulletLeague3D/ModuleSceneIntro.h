@@ -19,6 +19,7 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate (float dt);
 	bool CleanUp();
+	bool Draw();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 

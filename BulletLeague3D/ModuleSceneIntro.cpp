@@ -545,13 +545,18 @@ bool ModuleSceneIntro::CleanUp()
 
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
-	//TODO 3: Nothing to do here. But it's good to know where all primitives are being rendered
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleSceneIntro::Draw()
+{
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
 		primitives[n]->Render();
 	}
 
-	return UPDATE_CONTINUE;
+	return true;
 }
 // Update
 update_status ModuleSceneIntro::Update(float dt)

@@ -22,6 +22,7 @@ public:
 	ModuleSceneIntro* scene_intro;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
+	ModuleCamera3D* camera_2;
 	ModulePhysics3D* physics;
 	ModulePlayer* player;
 
@@ -39,6 +40,11 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	bool Draw();
+
+
+	p2List<ModuleCamera3D*> cam_list;
+
 
 private:
 

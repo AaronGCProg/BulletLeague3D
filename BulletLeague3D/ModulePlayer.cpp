@@ -308,7 +308,6 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	vehicle->Render();
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f X , %.1f Y, %.1f Z", vehicle->GetKmh(), 
@@ -316,6 +315,20 @@ update_status ModulePlayer::Update(float dt)
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
+}
+
+update_status ModulePlayer::PostUpdate(float dt)
+{
+
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModulePlayer::Draw()
+{
+	vehicle->Render();
+
+	return true;
 }
 
 // World to Local forces translation

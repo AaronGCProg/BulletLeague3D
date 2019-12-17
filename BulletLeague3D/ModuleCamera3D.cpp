@@ -4,9 +4,12 @@
 #include "ModuleCamera3D.h"
 #include "ModulePlayer.h"
 #include "PhysVehicle3D.h"
+#include "ModuleWindow.h"
 
-ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled, uint camNum) : Module(app, start_enabled), cameraNum(camNum)
 {
+	App->cam_list.add(this);
+
 	CalculateViewMatrix();
 
 	X = vec3(1.0f, 0.0f, 0.0f);
@@ -15,6 +18,26 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	Position = vec3(0.0f, 0.0f, 5.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
+
+	camViewPort = { 0,0,0,0 };
+
+
+	switch (this->cameraNum) {
+
+	case 1:
+		camViewPort.x = 0.0f;
+		camViewPort.y = 0.0f;
+		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.h = App->window->SCREEN_HEIGHT;
+		break;
+	case 2:
+		camViewPort.x = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.y = 0.0f;
+		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.h = App->window->SCREEN_HEIGHT;
+
+		break;
+	}
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -238,4 +261,33 @@ void ModuleCamera3D::CalculateViewMatrix()
 vec3 ModuleCamera3D::GetCameraPosition()
 {
 	return Position;
+}
+
+// -----------------------------------------------------------------
+SDL_Rect ModuleCamera3D::getViewPort()
+{
+	return camViewPort;
+}
+
+
+void ModuleCamera3D::ReSizeViewPorts()
+{
+	switch (this->cameraNum) {
+
+	case 1:
+		camViewPort.x = 0;
+		camViewPort.y = 0;
+		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.h = App->window->SCREEN_HEIGHT;
+		break;
+	case 2:
+		camViewPort.x = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.y = 0;
+		camViewPort.w = App->window->SCREEN_WIDTH * 0.5f;
+		camViewPort.h = App->window->SCREEN_HEIGHT;
+
+		break;
+	}
+
+
 }
