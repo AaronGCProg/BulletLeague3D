@@ -8,6 +8,32 @@
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) : Module(app, start_enabled), vehicle(NULL), playerNum(playerNum)
 {
 	turn = acceleration = brake = 0.0f;
+
+	Forward[0] = {SDL_SCANCODE_W };
+	Forward[1] = { SDL_SCANCODE_UP };
+
+	Backward[0] = { SDL_SCANCODE_S};
+	Backward[1] = { SDL_SCANCODE_DOWN };
+
+	Right[0] = { SDL_SCANCODE_D };
+	Right[1] = { SDL_SCANCODE_RIGHT };
+
+	Left[0] = { SDL_SCANCODE_A };
+	Left[1] = { SDL_SCANCODE_LEFT };
+
+	Jump[0] = { SDL_SCANCODE_SPACE };
+	Jump[1] = { SDL_SCANCODE_KP_0 };
+
+	Turbo[0] = { SDL_SCANCODE_LSHIFT };
+	Turbo[1] = { SDL_SCANCODE_RSHIFT };
+
+	Brake[0] = { SDL_SCANCODE_B };
+	Brake[1] = { SDL_SCANCODE_KP_1 };
+
+	SwapCamera[0] = { SDL_SCANCODE_R };
+	SwapCamera[1] = { SDL_SCANCODE_KP_5 };
+
+
 }
 
 ModulePlayer::~ModulePlayer()
@@ -168,13 +194,13 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact)
+	if(App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
 		acceleration = MAX_ACCELERATION;		
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -185,7 +211,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && wallContact)
+	if(App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
 		if(turn < TURN_DEGREES && !canDrift)
 			turn +=  TURN_DEGREES;
@@ -199,7 +225,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -223,7 +249,9 @@ update_status ModulePlayer::Update(float dt)
 			
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && wallContact)
+
+
+	if(App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
 		if(turn > -TURN_DEGREES && !canDrift)
 			turn -= TURN_DEGREES;
@@ -237,7 +265,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
 
 		if(vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
@@ -260,13 +288,13 @@ update_status ModulePlayer::Update(float dt)
 		
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact)
+	if(App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
 		acceleration = -MAX_ACCELERATION ;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -277,39 +305,39 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && wallContact)
+	if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && wallContact)
 	{
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
 		wallContact = false;
 		
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact&& !secondJump)
+	else if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && !wallContact&& !secondJump)
 	{			
 		secondJump = true;
 
 		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
 			
 	
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+		if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, 300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(115000.0f, 0.0f, 0.0f));
 		}		
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
+		else if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, -300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(-115000.0f, 0.0f, 0.0f));
 		}		
-		else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+		else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(-300000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 45000.0f));
 		}			
-		else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+		else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(300000.0f, 0.0f, 0.0f));
@@ -319,20 +347,30 @@ update_status ModulePlayer::Update(float dt)
 	
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	if (App->input->GetKey(Brake[playerNum - 1]) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
 		canDrift = true;
 
 	}
-	else if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP)
+	else if(App->input->GetKey(Brake[playerNum - 1]) == KEY_UP)
 		canDrift = false;
 
 
-	if (App->input->GetMouseButton(1) == KEY_REPEAT) 
+	if (App->input->GetKey(Turbo[playerNum - 1]) == KEY_REPEAT)
 	{
 		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 100.0f));
 	}
+
+	if (App->input->GetKey(SwapCamera[playerNum - 1]) == KEY_DOWN) 
+	{
+		if(playerNum == 1)
+			App->camera->lookAtBall = !App->camera->lookAtBall;
+		else
+			App->camera_2->lookAtBall = !App->camera_2->lookAtBall;
+
+	}
+		
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);

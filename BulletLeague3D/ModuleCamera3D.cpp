@@ -77,8 +77,7 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		cameraDebug = !cameraDebug;
 
-	if (App->input->GetMouseButton(3) == KEY_DOWN)
-		lookAtBall = !lookAtBall;
+	
 
 	if (cameraDebug)
 	{
