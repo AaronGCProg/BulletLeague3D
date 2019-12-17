@@ -20,12 +20,11 @@ bool ModuleSceneIntro::Start()
 	//Create MatchBall------------------------------------
 	Sphere* mtBall = new Sphere(3);
 	mtBall->SetPos(0, 12, 0);
-	float force = 0.0f;
 
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body = App->physics->AddBody(*mtBall, 0.3);
+	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 3.3f);
 
 	//Field ground---------------------------------------------
 	Cube* ground = new Cube(400,10,440);
@@ -35,7 +34,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0, CNT_GROUND);
+	App->physics->AddBody(*ground,0, CNT_MAP);
 
 
 	//Field walls----------------------------------------------
@@ -43,14 +42,14 @@ bool ModuleSceneIntro::Start()
 	wallr->SetPos(-100, 25, 0);
 
 	primitives.PushBack(wallr);
-	App->physics->AddBody(*wallr, 0, CNT_GROUND);
+	App->physics->AddBody(*wallr, 0, CNT_MAP);
 
 
 	Cube* walll = new Cube(10, 50, 400);
 	walll->SetPos(100, 25, 0);
 
 	primitives.PushBack(walll);
-	App->physics->AddBody(*walll, 0, CNT_GROUND);
+	App->physics->AddBody(*walll, 0, CNT_MAP);
 
 
 	Cube* wallfr = new Cube(115, 50, 10);
@@ -58,21 +57,21 @@ bool ModuleSceneIntro::Start()
 	wallfr->SetPos(-85, 25, 200);
 
 	primitives.PushBack(wallfr);
-	App->physics->AddBody(*wallfr, 0, CNT_GROUND);
+	App->physics->AddBody(*wallfr, 0, CNT_MAP);
 
 	Cube* wallfl = new Cube(115, 50, 10);
 	wallfl->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallfl->SetPos(85, 25, 200);
 
 	primitives.PushBack(wallfl);
-	App->physics->AddBody(*wallfl, 0, CNT_GROUND);
+	App->physics->AddBody(*wallfl, 0, CNT_MAP);
 
 	Cube* wallft = new Cube(60, 50, 10);
 	wallft->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallft->SetPos(0, 45, 200);
 
 	primitives.PushBack(wallft);
-	App->physics->AddBody(*wallft, 0, CNT_GROUND);
+	App->physics->AddBody(*wallft, 0, CNT_MAP);
 
 
 
@@ -81,7 +80,7 @@ bool ModuleSceneIntro::Start()
 	wallbr->SetPos(-85, 25, -200);
 
 	primitives.PushBack(wallbr);
-	App->physics->AddBody(*wallbr, 0, CNT_GROUND);
+	App->physics->AddBody(*wallbr, 0, CNT_MAP);
 
 
 	Cube* wallbl = new Cube(115, 50, 10);
@@ -89,14 +88,14 @@ bool ModuleSceneIntro::Start()
 	wallbl->SetPos(85, 25, -200);
 
 	primitives.PushBack(wallbl);
-	App->physics->AddBody(*wallbl, 0, CNT_GROUND);
+	App->physics->AddBody(*wallbl, 0, CNT_MAP);
 
 	Cube* wallbt = new Cube(60, 50, 10);
 	wallbt->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
 	wallbt->SetPos(0, 45, -200);
 
 	primitives.PushBack(wallbt);
-	App->physics->AddBody(*wallbt, 0, CNT_GROUND);
+	App->physics->AddBody(*wallbt, 0, CNT_MAP);
 
 	//Field celling---------------------------------------------
 	Cube* cell = new Cube(400, 5, 400);
@@ -106,7 +105,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(cell);
 
-	App->physics->AddBody(*cell, 0, CNT_GROUND);
+	App->physics->AddBody(*cell, 0, CNT_MAP);
 
 	//Goals ----------------------------------------------------
 	//Blue
@@ -141,6 +140,17 @@ bool ModuleSceneIntro::Start()
 
 		primitives.PushBack(goal_blue_back);
 		App->physics->AddBody(*goal_blue_back, 0);
+
+
+		Cube* goal_blue_sensor = new Cube(49, 13.5f, 20);
+		goal_blue_sensor->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
+		goal_blue_sensor->SetPos(0, 11.75f, -205);
+
+		primitives.PushBack(goal_blue_sensor);
+		goal_blue_sensor->body = App->physics->AddBody(*goal_blue_sensor, 0, CNT_BLUE_GOAL);
+		goal_blue_sensor->body->SetAsSensor(true);
+		goal_blue_sensor->body->collision_listeners.add(this);
+		goal_blue_sensor->SetInvisible(true);
 	}
 
 	//Orange
@@ -175,6 +185,17 @@ bool ModuleSceneIntro::Start()
 
 		primitives.PushBack(goal_orange_back);
 		App->physics->AddBody(*goal_orange_back, 0);
+
+
+		Cube* goal_orange_sensor = new Cube(49, 13.5f, 20);
+		goal_orange_sensor->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
+		goal_orange_sensor->SetPos(0, 11.75f, 205);
+
+		primitives.PushBack(goal_orange_sensor);
+		goal_orange_sensor->body = App->physics->AddBody(*goal_orange_sensor, 0, CNT_ORANGE_GOAL);
+		goal_orange_sensor->body->SetAsSensor(true);
+		goal_orange_sensor->body->collision_listeners.add(this);
+		goal_orange_sensor->SetInvisible(true);
 	}
 
 	//Big Boosters ---------------------------------------------
@@ -651,6 +672,7 @@ bool ModuleSceneIntro::Draw()
 {
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
+		if(!primitives[n]->isInvisible)
 		primitives[n]->Render();
 	}
 
@@ -696,12 +718,33 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1->is_sensor && body1->sensorOnline && body2->cntType == CNT_VEHICLE)
+	switch (body1->cntType)
 	{
-		//TODO: Add trubo here
-		body1->sensorOnline = false;
-	}
+	case CNT_BIG_BOOST:
+		if (body2->cntType == CNT_VEHICLE)
+		{
+			//TODO: Add trubo here
+			body1->sensorOnline = false;
+		}
+		break;
 
+	case CNT_LITTLE_BOOST:
+		if (body2->cntType == CNT_VEHICLE)
+		{
+			//TODO: Add trubo here
+			body1->sensorOnline = false;
+		}
+		break;
+
+	case CNT_BLUE_GOAL:
+
+		break;
+
+	case CNT_ORANGE_GOAL:
+
+		break;
+
+	}
 
 }
 

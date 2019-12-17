@@ -27,6 +27,8 @@ public:
 	void			SetPos(float x, float y, float z);
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
+	void			SetInvisible(bool inVisible);
+
 	PrimitiveTypes	GetType() const;
 	void			Update();
 
@@ -36,6 +38,7 @@ public:
 	mat4x4 transform;
 	bool axis,wire;
 	PhysBody3D* body = nullptr;
+	bool isInvisible;
 
 protected:
 	PrimitiveTypes type;

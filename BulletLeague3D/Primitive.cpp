@@ -8,7 +8,7 @@
 #pragma comment (lib, "glut/glut32.lib")
 
 // ------------------------------------------------------------
-Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
+Primitive::Primitive() : transform(IdentityMatrix), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point), isInvisible(false)
 {}
 
 // ------------------------------------------------------------
@@ -280,4 +280,15 @@ void Plane::InnerRender() const
 	}
 
 	glEnd();
+}
+
+
+
+// ---------------------------------------------------------
+void Primitive::SetInvisible(bool isInvisible)
+{
+	if (this->isInvisible != isInvisible)
+	{
+		this->isInvisible = isInvisible;
+	}
 }
