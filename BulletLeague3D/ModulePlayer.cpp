@@ -331,7 +331,7 @@ btVector3 ModulePlayer::WorldToLocal(float x, float y, float z)
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1->cntType == CNT_VEHICLE_SENSOR && body2->cntType == CNT_GROUND) 
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_GROUND) 
 	{
 		wallContact = true;
 		secondJump = false;
