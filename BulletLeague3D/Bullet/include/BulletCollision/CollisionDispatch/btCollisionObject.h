@@ -292,6 +292,8 @@ public:
 	{
 		m_updateRevision++;
 		m_restitution = rest;
+
+		m_updateRevision++;
 	}
 	btScalar	getRestitution() const
 	{

@@ -3,6 +3,7 @@
 #include "p2DynArray.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "Bullet/include/LinearMath/btScalar.h"
 
 #define MAX_SNAKE 2
 

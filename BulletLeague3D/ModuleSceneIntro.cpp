@@ -24,7 +24,7 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 3.3f);
+	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 6.f);
 
 	//Field ground---------------------------------------------
 	Cube* ground = new Cube(400,10,440);
@@ -202,7 +202,7 @@ bool ModuleSceneIntro::Start()
 
 	//Mid-----
 	{
-		Cube* bigPag_mid_left = new Cube(2, 0.75f, 2);
+		Cube* bigPag_mid_left = new Cube(2, 1.25f, 2);
 
 		bigPag_mid_left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_mid_left->SetPos(-80, 6.5f, 0);
@@ -214,7 +214,7 @@ bool ModuleSceneIntro::Start()
 		bigPag_mid_left->body->collision_listeners.add(this);
 
 
-		Cube* bigPag_mid_right = new Cube(2, 0.75f, 2);
+		Cube* bigPag_mid_right = new Cube(2, 1.25f, 2);
 
 		bigPag_mid_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_mid_right->SetPos(80, 6.5f, 0);
@@ -229,7 +229,7 @@ bool ModuleSceneIntro::Start()
 
 	//Back-------
 	{
-		Cube* bigPag_back_left = new Cube(2, 0.75f, 2);
+		Cylinder* bigPag_back_left = new Cylinder(3.5f, 1.5f);
 
 		bigPag_back_left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_back_left->SetPos(-70, 6.5f, -160);
@@ -238,10 +238,16 @@ bool ModuleSceneIntro::Start()
 
 		bigPag_back_left->body = App->physics->AddBody(*bigPag_back_left, 0, CNT_BIG_BOOST);
 		bigPag_back_left->body->SetAsSensor(true);
+
+		mat4x4 trans;
+		bigPag_back_left->body->GetTransform(&trans);
+		trans.rotate(90, { 0,0,1 });
+		bigPag_back_left->body->SetTransform(&trans);
+
 		bigPag_back_left->body->collision_listeners.add(this);
 
 
-		Cube* bigPag_back_right = new Cube(2, 0.75f, 2);
+		Cylinder* bigPag_back_right = new Cylinder(3.5f, 1.5f);
 
 		bigPag_back_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_back_right->SetPos(70, 6.5f, -160);
@@ -250,12 +256,17 @@ bool ModuleSceneIntro::Start()
 
 		bigPag_back_right->body = App->physics->AddBody(*bigPag_back_right, 0, CNT_BIG_BOOST);
 		bigPag_back_right->body->SetAsSensor(true);
+
+		bigPag_back_right->body->GetTransform(&trans);
+		trans.rotate(90, { 0,0,1 });
+		bigPag_back_right->body->SetTransform(&trans);
+
 		bigPag_back_right->body->collision_listeners.add(this);
 	}
 
 	//Front-------
 	{
-		Cube* bigPag_front_left = new Cube(2, 0.75f, 2);
+		Cube* bigPag_front_left = new Cube(3, 1.25f, 3);
 
 		bigPag_front_left->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_front_left->SetPos(-70, 6.5f, 160);
@@ -267,7 +278,7 @@ bool ModuleSceneIntro::Start()
 		bigPag_front_left->body->collision_listeners.add(this);
 
 
-		Cube* bigPag_front_right = new Cube(2, 0.75f, 2);
+		Cube* bigPag_front_right = new Cube(3, 1.25f, 3);
 
 		bigPag_front_right->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
 		bigPag_front_right->SetPos(70, 6.5f, 160);
