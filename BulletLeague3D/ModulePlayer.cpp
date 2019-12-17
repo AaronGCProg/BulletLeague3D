@@ -355,7 +355,11 @@ update_status ModulePlayer::PostUpdate(float dt)
 
 bool ModulePlayer::Draw()
 {
-	vehicle->Render();
+
+	if(playerNum == 1)
+		vehicle->Render(1);
+	else
+		vehicle->Render(2);
 
 	return true;
 }

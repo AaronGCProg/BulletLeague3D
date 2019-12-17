@@ -58,7 +58,7 @@ public:
 	PhysVehicle3D(btRigidBody* body, btRaycastVehicle* vehicle, const VehicleInfo& info);
 	~PhysVehicle3D();
 
-	void Render();
+	void Render(int carPlayer);
 	void ApplyEngineForce(float force);
 	void Brake(float force);
 	void Turn(float degrees);

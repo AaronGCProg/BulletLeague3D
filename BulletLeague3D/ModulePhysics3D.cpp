@@ -147,7 +147,7 @@ bool ModulePhysics3D::Draw()
 		p2List_item<PhysVehicle3D*>* item = vehicles.getFirst();
 		while (item)
 		{
-			item->data->Render();
+			item->data->Render(1);
 			item = item->next;
 		}
 
