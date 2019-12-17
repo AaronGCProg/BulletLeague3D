@@ -197,7 +197,7 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if(App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if(App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact && vehicle->GetKmh() < 160)
 	{
 		acceleration = MAX_ACCELERATION;		
 

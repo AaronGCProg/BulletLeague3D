@@ -66,5 +66,4 @@ private:
 	SDL_Scancode Brake[PLAYERS];
 	SDL_Scancode SwapCamera[PLAYERS];
 	
-
 };
