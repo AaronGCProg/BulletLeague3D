@@ -147,7 +147,7 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 		else
 		{
-			if (App->player->wallContact[CNT_GROUND])
+			if (App->player->wallContact)
 			{
 				mat4x4 transform;
 				App->player->vehicle->GetTransform(&transform);

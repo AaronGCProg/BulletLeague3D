@@ -40,6 +40,6 @@ public:
 	bool secondJump;
 	bool canDrift;
 
-	bool wallContact[CNT_MAX] = { false };
+	bool wallContact;
 
 };
