@@ -80,14 +80,12 @@ bool ModuleRenderer3D::Init()
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
 
 
 		lights[1].ref = GL_LIGHT0;
 		lights[1].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[1].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-		lights[1].SetPos(0.0f, 0.0f, 2.5f);
 		lights[1].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};

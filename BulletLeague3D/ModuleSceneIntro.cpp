@@ -28,14 +28,14 @@ bool ModuleSceneIntro::Start()
 	mtBall->body = App->physics->AddBody(*mtBall, 0.3);
 
 	//Field ground---------------------------------------------
-	Cube* ground = new Cube(400,10,400);
+	Cube* ground = new Cube(400,10,440);
 
 	ground->color.Set(106.f / 255.f,70.f / 255.f,42.f /255.f);
 	ground->SetPos(0, 0, 0);
 
 	primitives.PushBack(ground);
 
-	 App->physics->AddBody(*ground,0, CNT_GROUND);
+	App->physics->AddBody(*ground,0, CNT_GROUND);
 
 
 	//Field walls----------------------------------------------
@@ -53,24 +53,53 @@ bool ModuleSceneIntro::Start()
 	App->physics->AddBody(*walll, 0, CNT_GROUND);
 
 
-	Cube* wallf = new Cube(400, 50, 10);
-	wallf->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
-	wallf->SetPos(0, 25, 200);
+	Cube* wallfr = new Cube(115, 50, 10);
+	wallfr->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
+	wallfr->SetPos(-85, 25, 200);
 
-	primitives.PushBack(wallf);
-	App->physics->AddBody(*wallf, 0, CNT_GROUND);
+	primitives.PushBack(wallfr);
+	App->physics->AddBody(*wallfr, 0, CNT_GROUND);
+
+	Cube* wallfl = new Cube(115, 50, 10);
+	wallfl->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
+	wallfl->SetPos(85, 25, 200);
+
+	primitives.PushBack(wallfl);
+	App->physics->AddBody(*wallfl, 0, CNT_GROUND);
+
+	Cube* wallft = new Cube(60, 50, 10);
+	wallft->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
+	wallft->SetPos(0, 45, 200);
+
+	primitives.PushBack(wallft);
+	App->physics->AddBody(*wallft, 0, CNT_GROUND);
 
 
 
-	Cube* wallb = new Cube(400, 50, 10);
-	wallb->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
-	wallb->SetPos(0, 25, -200);
+	Cube* wallbr = new Cube(115, 50, 10);
+	wallbr->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
+	wallbr->SetPos(-85, 25, -200);
 
-	primitives.PushBack(wallb);
-	App->physics->AddBody(*wallb, 0, CNT_GROUND);
+	primitives.PushBack(wallbr);
+	App->physics->AddBody(*wallbr, 0, CNT_GROUND);
+
+
+	Cube* wallbl = new Cube(115, 50, 10);
+	wallbl->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
+	wallbl->SetPos(85, 25, -200);
+
+	primitives.PushBack(wallbl);
+	App->physics->AddBody(*wallbl, 0, CNT_GROUND);
+
+	Cube* wallbt = new Cube(60, 50, 10);
+	wallbt->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
+	wallbt->SetPos(0, 45, -200);
+
+	primitives.PushBack(wallbt);
+	App->physics->AddBody(*wallbt, 0, CNT_GROUND);
 
 	//Field celling---------------------------------------------
-	Cube* cell = new Cube(400, 10, 400);
+	Cube* cell = new Cube(400, 5, 400);
 
 	cell->color.Set(0.f / 255.f, 255.f / 255.f, 234.f / 255.f);
 	cell->SetPos(0, 50, 0);
@@ -78,6 +107,75 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(cell);
 
 	App->physics->AddBody(*cell, 0, CNT_GROUND);
+
+	//Goals ----------------------------------------------------
+	//Blue
+	{
+		Cube* goal_blue_top = new Cube(55, 1.5f, 20);
+		goal_blue_top->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_blue_top->SetPos(0, 19.25f, -205);
+
+		primitives.PushBack(goal_blue_top);
+		App->physics->AddBody(*goal_blue_top, 0);
+
+
+		Cube* goal_blue_left = new Cube(3, 15, 20);
+		goal_blue_left->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_blue_left->SetPos(-26, 12.5f, -205);
+
+		primitives.PushBack(goal_blue_left);
+		App->physics->AddBody(*goal_blue_left, 0);
+
+
+		Cube* goal_blue_right = new Cube(3, 15, 20);
+		goal_blue_right->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_blue_right->SetPos(26, 12.5f, -205);
+
+		primitives.PushBack(goal_blue_right);
+		App->physics->AddBody(*goal_blue_right, 0);
+
+
+		Cube* goal_blue_back = new Cube(55, 15, 1.5f);
+		goal_blue_back->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
+		goal_blue_back->SetPos(0, 12.5f, -215);
+
+		primitives.PushBack(goal_blue_back);
+		App->physics->AddBody(*goal_blue_back, 0);
+	}
+
+	//Orange
+	{
+		Cube* goal_orange_top = new Cube(55, 1.5f, 20);
+		goal_orange_top->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_orange_top->SetPos(0, 19.25f, 205);
+
+		primitives.PushBack(goal_orange_top);
+		App->physics->AddBody(*goal_orange_top, 0);
+
+
+		Cube* goal_orange_left = new Cube(3, 15, 20);
+		goal_orange_left->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_orange_left->SetPos(-26, 12.5f, 205);
+
+		primitives.PushBack(goal_orange_left);
+		App->physics->AddBody(*goal_orange_left, 0);
+
+
+		Cube* goal_orange_right = new Cube(3, 15, 20);
+		goal_orange_right->color.Set(200.f / 255.f, 200.f / 255.f, 200.f / 255.f);
+		goal_orange_right->SetPos(26, 12.5f, 205);
+
+		primitives.PushBack(goal_orange_right);
+		App->physics->AddBody(*goal_orange_right, 0);
+
+
+		Cube* goal_orange_back = new Cube(55, 15, 1.5f);
+		goal_orange_back->color.Set(255.f / 255.f, 149.f / 255.f, 1.f / 255.f);
+		goal_orange_back->SetPos(0, 12.5f, 215);
+
+		primitives.PushBack(goal_orange_back);
+		App->physics->AddBody(*goal_orange_back, 0);
+	}
 
 	//Big Boosters ---------------------------------------------
 
