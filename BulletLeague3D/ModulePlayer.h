@@ -56,6 +56,7 @@ public:
 
 private:
 
+	// INPUTS FOR EACH PLAYER
 	SDL_Scancode Forward[PLAYERS];
 	SDL_Scancode Backward[PLAYERS];
 	SDL_Scancode Right[PLAYERS];

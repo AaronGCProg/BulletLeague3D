@@ -9,6 +9,9 @@ ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) 
 {
 	turn = acceleration = brake = 0.0f;
 
+
+
+	// INPUTS FOR EACH PLAYER
 	Forward[0] = {SDL_SCANCODE_W };
 	Forward[1] = { SDL_SCANCODE_UP };
 
