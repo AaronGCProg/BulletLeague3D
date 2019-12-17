@@ -50,4 +50,9 @@ public:
 
 	int playerNum;
 
+
+
+private:
+
+
 };
