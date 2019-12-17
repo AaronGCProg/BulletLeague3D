@@ -160,10 +160,14 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact)
 	{
 		acceleration = MAX_ACCELERATION;		
+
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact)
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
+	
+		if(vehicle->myBody->getAngularVelocity().getX() < MAX_ACROBATIC_SPEED)
+			vehicle->myBody->applyTorque(WorldToLocal(5000.0f, 0.0f, 0.0f));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && wallContact)
@@ -176,12 +180,26 @@ update_status ModulePlayer::Update(float dt)
 			
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
 		}
-		vehicle->myBody->applyGravity();
+
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact)
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
+
+		if (secondJump) 
+		{
+			if (vehicle->myBody->getAngularVelocity().getZ() > -MAX_ACROBATIC_SPEED)
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -5000.0f));
+		
+		}
+		else 
+		{
+
+			if (vehicle->myBody->getAngularVelocity().getY() < MAX_ACROBATIC_SPEED)
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 5000.0f, 0.0f));
+		}
+			
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && wallContact)
@@ -195,21 +213,38 @@ update_status ModulePlayer::Update(float dt)
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -10000.0f, 0.0f));
 		}
 			
-		vehicle->myBody->applyGravity();
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact)
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
+
+		if (secondJump) 
+		{
+
+			if (vehicle->myBody->getAngularVelocity().getZ() < MAX_ACROBATIC_SPEED)
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 5000.0f));
+		}			
+		else 
+		{
+		
+			if (vehicle->myBody->getAngularVelocity().getY() > -MAX_ACROBATIC_SPEED)
+				vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
+
+		}
+		
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact)
 	{
 		acceleration = -MAX_ACCELERATION ;
+
+		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact && !jumpImpulse)
+	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact)
 	{
-		vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
+		if (vehicle->myBody->getAngularVelocity().getX() > -MAX_ACROBATIC_SPEED)
+			vehicle->myBody->applyTorque(WorldToLocal(-5000.0f, 0.0f, 0.0f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && wallContact)
@@ -276,7 +311,8 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
+	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f X , %.1f Y, %.1f Z", vehicle->GetKmh(), 
+		vehicle->myBody->getAngularVelocity().getX(), vehicle->myBody->getAngularVelocity().getY(), vehicle->myBody->getAngularVelocity().getZ());
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
