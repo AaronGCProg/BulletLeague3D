@@ -43,14 +43,14 @@ bool ModuleSceneIntro::Start()
 	wallr->SetPos(-100, 25, 0);
 
 	primitives.PushBack(wallr);
-	App->physics->AddBody(*wallr, 0);
+	App->physics->AddBody(*wallr, 0, CNT_GROUND);
 
 
 	Cube* walll = new Cube(10, 50, 400);
 	walll->SetPos(100, 25, 0);
 
 	primitives.PushBack(walll);
-	App->physics->AddBody(*walll, 0);
+	App->physics->AddBody(*walll, 0, CNT_GROUND);
 
 
 	Cube* wallf = new Cube(400, 50, 10);
@@ -58,7 +58,7 @@ bool ModuleSceneIntro::Start()
 	wallf->SetPos(0, 25, 200);
 
 	primitives.PushBack(wallf);
-	App->physics->AddBody(*wallf, 0);
+	App->physics->AddBody(*wallf, 0, CNT_GROUND);
 
 
 
@@ -67,7 +67,7 @@ bool ModuleSceneIntro::Start()
 	wallb->SetPos(0, 25, -200);
 
 	primitives.PushBack(wallb);
-	App->physics->AddBody(*wallb, 0);
+	App->physics->AddBody(*wallb, 0, CNT_GROUND);
 
 	//Field celling---------------------------------------------
 	Cube* cell = new Cube(400, 10, 400);
@@ -77,7 +77,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(cell);
 
-	App->physics->AddBody(*cell, 0);
+	App->physics->AddBody(*cell, 0, CNT_GROUND);
 
 	//Big Boosters ---------------------------------------------
 

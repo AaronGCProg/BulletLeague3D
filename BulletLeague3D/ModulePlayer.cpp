@@ -143,11 +143,8 @@ bool ModulePlayer::Start()
 
 		mat4x4 trans;
 		vehicle->GetTransform(&trans);
-
 		trans.rotate(180, {0, -1, 0});
-
 		vehicle->SetTransform(&trans);
-
 	}
 
 
