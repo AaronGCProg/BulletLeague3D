@@ -227,9 +227,6 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, ContactTy
 	bodies.add(pbody);
 
 
-	if (matchBall == nullptr)
-		matchBall = pbody;
-
 	return pbody;
 }
 

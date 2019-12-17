@@ -29,7 +29,7 @@ public:
 	void SetAsSensor(bool IsSensor);
 
 	ContactType cntType;
-	bool is_sensor, sensorOnline;
+	bool is_sensor, sensorOnline, isInvisible;
 	float innerSensorTimer;
 
 private:
