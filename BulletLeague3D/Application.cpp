@@ -7,7 +7,8 @@ Application::Application()
 	audio = new ModuleAudio(this, true);
 	scene_intro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
+	camera = new ModuleCamera3D(this, true, 1);
+	camera_2 = new ModuleCamera3D(this, true, 2);
 	physics = new ModulePhysics3D(this);
 	player = new ModulePlayer(this);
 
@@ -17,7 +18,6 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
-	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
@@ -25,6 +25,8 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(player);
+	AddModule(camera);
+	AddModule(camera_2);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -123,6 +125,20 @@ bool Application::CleanUp()
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
+	}
+	return ret;
+}
+
+bool Application::Draw()
+{
+	bool ret = true;
+
+	p2List_item<Module*>* item = list_modules.getFirst();
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Draw();
+		item = item->next;
 	}
 	return ret;
 }

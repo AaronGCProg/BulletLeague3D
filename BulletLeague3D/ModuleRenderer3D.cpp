@@ -82,6 +82,13 @@ bool ModuleRenderer3D::Init()
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
 		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
+
+
+		lights[1].ref = GL_LIGHT0;
+		lights[1].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
+		lights[1].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
+		lights[1].SetPos(0.0f, 0.0f, 2.5f);
+		lights[1].Init();
 		
 		GLfloat MaterialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, MaterialAmbient);
@@ -91,13 +98,16 @@ bool ModuleRenderer3D::Init()
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
+
 		lights[0].Active(true);
+		lights[1].Active(true);
+
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 	}
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize();
 
 	return ret;
 }
@@ -105,17 +115,11 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->GetViewMatrix());
 
-	// light 0 on cam pos
-	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-
-	for(uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();
 
 	return UPDATE_CONTINUE;
 }
@@ -123,7 +127,35 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	p2List_item<ModuleCamera3D*>* item = App->cam_list.getFirst();
+
+	int lightNum = 0;
+	while (item != NULL)
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(App->camera->GetViewMatrix());
+
+		SDL_Rect viewport = item->data->getViewPort();
+		glViewport(viewport.x, viewport.y, viewport.w, viewport.h);
+
+		App->Draw();
+
+		// light 0 on cam pos
+		lights[lightNum].SetPos(item->data->Position.x, item->data->Position.y, item->data->Position.z);
+
+		for (uint i = 0; i < MAX_LIGHTS; ++i)
+			lights[i].Render();
+
+		lightNum++;
+
+		item = item->next;
+	}
+
 	SDL_GL_SwapWindow(App->window->window);
+
+
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -138,13 +170,27 @@ bool ModuleRenderer3D::CleanUp()
 }
 
 
-void ModuleRenderer3D::OnResize(int width, int height)
+void ModuleRenderer3D::OnResize()
 {
-	glViewport(0, 0, width, height);
+	SDL_GetWindowSize(App->window->window, &App->window->SCREEN_WIDTH, &App->window->SCREEN_HEIGHT);
+
+	p2List_item<ModuleCamera3D*>* item = App->cam_list.getFirst();
+	while (item != NULL)
+	{
+		item->data->ReSizeViewPorts();
+
+		item = item->next;
+	}
+
+	float width = (float)App->window->SCREEN_WIDTH;
+	float height =(float)App->window->SCREEN_HEIGHT;
+
+	//glViewport(0, 0, width, height);
+
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(60.0f, width / height, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);

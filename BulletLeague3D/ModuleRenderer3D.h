@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
+#include "SDL/include/SDL_rect.h"
 
 #define MAX_LIGHTS 8
 
@@ -17,7 +18,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void OnResize(int width, int height);
+	void OnResize();
 
 public:
 

@@ -27,6 +27,8 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	update_status PostUpdate(float dt);
+	bool Draw();
 	bool CleanUp();
 
 	btVector3 WorldToLocal(float x, float y, float z);
@@ -44,6 +46,6 @@ public:
 	bool secondJump;
 	bool canDrift;
 
-	bool wallContact[CNT_MAX] = { false };
+	bool wallContact;
 
 };

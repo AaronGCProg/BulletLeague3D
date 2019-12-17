@@ -76,30 +76,50 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 {
 	world->stepSimulation(dt, 15);
 
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		debug = !debug;
+
+	if (debug == true)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		{
+			Sphere s(1);
+			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+			float force = 30.0f;
+			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
+		}
+	}
+
+	return UPDATE_CONTINUE;
+}
+
+// ---------------------------------------------------------
+update_status ModulePhysics3D::Update(float dt)
+{
 	int numManifolds = world->getDispatcher()->getNumManifolds();
-	for(int i = 0; i<numManifolds; i++)
+	for (int i = 0; i < numManifolds; i++)
 	{
 		btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
 		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
 
 		int numContacts = contactManifold->getNumContacts();
-		if(numContacts > 0)
+		if (numContacts > 0)
 		{
 			PhysBody3D* pbodyA = (PhysBody3D*)obA->getUserPointer();
 			PhysBody3D* pbodyB = (PhysBody3D*)obB->getUserPointer();
 
-			if(pbodyA && pbodyB)
+			if (pbodyA && pbodyB)
 			{
 				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
-				while(item)
+				while (item)
 				{
 					item->data->OnCollision(pbodyA, pbodyB);
 					item = item->next;
 				}
 
 				item = pbodyB->collision_listeners.getFirst();
-				while(item)
+				while (item)
 				{
 					item->data->OnCollision(pbodyB, pbodyA);
 					item = item->next;
@@ -112,44 +132,28 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 }
 
 // ---------------------------------------------------------
-update_status ModulePhysics3D::Update(float dt)
+update_status ModulePhysics3D::PostUpdate(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
+	return UPDATE_CONTINUE;
+}
 
-	if(debug == true)
+bool ModulePhysics3D::Draw()
+{
+	if (debug == true)
 	{
 		world->debugDrawWorld();
 
 		// Render vehicles
 		p2List_item<PhysVehicle3D*>* item = vehicles.getFirst();
-		while(item)
+		while (item)
 		{
 			item->data->Render();
 			item = item->next;
 		}
 
-		if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-		{
-			Sphere s(1);
-			s.SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
-			float force = 30.0f;
-			AddBody(s)->Push(-(App->camera->Z.x * force), -(App->camera->Z.y * force), -(App->camera->Z.z * force));
-		}
 	}
 
-
-
-
-	return UPDATE_CONTINUE;
-}
-
-// ---------------------------------------------------------
-update_status ModulePhysics3D::PostUpdate(float dt)
-{
-
-
-	return UPDATE_CONTINUE;
+	return true;
 }
 
 // Called before quitting

@@ -4,11 +4,12 @@
 #include "glmath.h"
 
 #include "Bullet/include/LinearMath/btVector3.h"
+#include "SDL/include/SDL_rect.h"
 
 class ModuleCamera3D : public Module
 {
 public:
-	ModuleCamera3D(Application* app, bool start_enabled = true);
+	ModuleCamera3D(Application* app, bool start_enabled = true, uint cameraNum = 0u);
 	~ModuleCamera3D();
 
 	bool Start();
@@ -20,6 +21,8 @@ public:
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
 	vec3 GetCameraPosition();
+	SDL_Rect getViewPort();
+	void ReSizeViewPorts();
 
 
 private:
@@ -35,6 +38,8 @@ public:
 	bool lookAtBall = false;
 	float multiplier = 1.0f;
 
+	uint cameraNum = 0u;
+	SDL_Rect camViewPort;
 
 private:
 

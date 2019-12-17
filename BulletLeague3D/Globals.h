@@ -35,13 +35,12 @@ enum ContactType
 	CNT_BIG_BOOST,
 	CNT_LITTLE_BOOST,
 	CNT_VEHICLE,
+	CNT_VEHICLE_SENSOR,
 
 	CNT_MAX
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 1280
-#define SCREEN_HEIGHT 1024
 #define SCREEN_SIZE 1
 #define WIN_FULLSCREEN false
 #define WIN_RESIZABLE true

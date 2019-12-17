@@ -18,13 +18,12 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
-	
 
 	// Car properties ----------------------------------------
-
-	car.sensor = new Cube(0.2f, 0.2f, 0.2f);
-	App->physics->AddBody(*car.sensor, 0, CNT_GROUND)->SetAsSensor(true);
-	App->scene_intro->primitives.PushBack(car.sensor);
+	car.sensor = new Sphere(1.f);
+	car.sensor->body = App->physics->AddBody(*car.sensor, 0, CNT_VEHICLE_SENSOR);
+	car.sensor->body->SetAsSensor(true);
+	car.sensor->body->collision_listeners.add(this);
 
 
 	//All chassis parts
@@ -134,11 +133,11 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
 	vehicle->cntType = CNT_VEHICLE;
-	vehicle->SetPos(0, 8, -170);
+	vehicle->SetPos(0, 8, -160);
 
 
 
-	
+
 	return true;
 }
 
@@ -159,13 +158,13 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact[CNT_GROUND])
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && wallContact)
 	{
 		acceleration = MAX_ACCELERATION;		
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact[CNT_GROUND])
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -176,7 +175,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && wallContact[CNT_GROUND])
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && wallContact)
 	{
 		if(turn < TURN_DEGREES && !canDrift)
 			turn +=  TURN_DEGREES;
@@ -190,7 +189,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact[CNT_GROUND])
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -214,7 +213,7 @@ update_status ModulePlayer::Update(float dt)
 			
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && wallContact[CNT_GROUND])
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && wallContact)
 	{
 		if(turn > -TURN_DEGREES && !canDrift)
 			turn -= TURN_DEGREES;
@@ -228,7 +227,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact[CNT_GROUND])
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !wallContact)
 	{
 
 		if(vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
@@ -251,13 +250,13 @@ update_status ModulePlayer::Update(float dt)
 		
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact[CNT_GROUND])
+	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && wallContact)
 	{
 		acceleration = -MAX_ACCELERATION ;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact[CNT_GROUND])
+	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && !wallContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -268,14 +267,14 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && wallContact[CNT_GROUND])
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && wallContact)
 	{
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
-		wallContact[CNT_GROUND] = false;
+		wallContact = false;
 		
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact[CNT_GROUND] && !secondJump)
+	else if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && !wallContact&& !secondJump)
 	{			
 		secondJump = true;
 
@@ -329,13 +328,26 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	vehicle->Render();
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f", vehicle->GetKmh(), vehicle->myBody->getAngularVelocity().length());
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
+}
+
+update_status ModulePlayer::PostUpdate(float dt)
+{
+
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModulePlayer::Draw()
+{
+	vehicle->Render();
+
+	return true;
 }
 
 // World to Local forces translation
@@ -351,9 +363,9 @@ btVector3 ModulePlayer::WorldToLocal(float x, float y, float z)
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body2->cntType == CNT_GROUND) 
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_GROUND) 
 	{
-		wallContact[CNT_GROUND] = true;
+		wallContact = true;
 		secondJump = false;
 		jumpImpulse = false;
 	}
