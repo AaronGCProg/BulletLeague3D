@@ -9,6 +9,7 @@ ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) 
 {
 	turn = acceleration = brake = 0.0f;
 	groundRayCast = { 0,0,0 };
+	goalNum = 0;
 
 	// INPUTS FOR EACH PLAYER
 	Forward[0] = {SDL_SCANCODE_W };
@@ -205,13 +206,13 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact && vehicle->GetKmh() < 160)
+	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && fieldContact && vehicle->GetKmh() < 160)
 	{
 		acceleration = MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && !fieldContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -222,7 +223,7 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && fieldContact)
 	{
 		if (turn < TURN_DEGREES && !canDrift)
 			turn += TURN_DEGREES;
@@ -236,7 +237,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 
 	}
-	else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && !fieldContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -262,7 +263,7 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && fieldContact)
 	{
 		if (turn > -TURN_DEGREES && !canDrift)
 			turn -= TURN_DEGREES;
@@ -276,7 +277,7 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 
 	}
-	else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && !fieldContact)
 	{
 
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
@@ -299,13 +300,13 @@ update_status ModulePlayer::Update(float dt)
 
 	}
 
-	if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && fieldContact)
 	{
 		acceleration = -MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
-	else if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && !wallContact)
+	else if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && !fieldContact)
 	{
 		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
@@ -316,14 +317,14 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && wallContact)
+	if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && fieldContact)
 	{
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
 		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
-		wallContact = false;
+		fieldContact = false;
 
 	}
-	else if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && !wallContact && !secondJump)
+	else if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && !fieldContact && !secondJump)
 	{
 		secondJump = true;
 
@@ -391,14 +392,14 @@ update_status ModulePlayer::Update(float dt)
 	groundRayCast = App->physics->RayCast({ this->vehicle->GetPos().x,this->vehicle->GetPos().y+1, this->vehicle->GetPos().z }, vehicle->GetDown());
 	if (length(groundRayCast) < 2.f )
 	{
-		wallContact = true;
+		fieldContact = true;
 		secondJump = false;
 		jumpImpulse = false;
 		vehicle->Push(0.0f, -STICK_FORCE/4, 0.0f);
 	}
 	else
 	{
-  		wallContact = false;
+  		fieldContact = false;
 	}
 
 	return UPDATE_CONTINUE;
@@ -431,6 +432,7 @@ btVector3 ModulePlayer::WorldToLocal(float x, float y, float z)
 
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+
 {
 	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_LITTLE_BOOST)
 	{

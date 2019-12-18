@@ -146,7 +146,7 @@ bool ModuleSceneIntro::Start()
 
 		Cube* goal_blue_sensor = new Cube(49, 13.5f, 20);
 		goal_blue_sensor->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
-		goal_blue_sensor->SetPos(0, 11.75f, -205);
+		goal_blue_sensor->SetPos(0, 11.75f, -208);
 
 		primitives.PushBack(goal_blue_sensor);
 		goal_blue_sensor->body = App->physics->AddBody(*goal_blue_sensor, 0, CNT_BLUE_GOAL);
@@ -191,7 +191,7 @@ bool ModuleSceneIntro::Start()
 
 		Cube* goal_orange_sensor = new Cube(49, 13.5f, 20);
 		goal_orange_sensor->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
-		goal_orange_sensor->SetPos(0, 11.75f, 205);
+		goal_orange_sensor->SetPos(0, 11.75f, 208);
 
 		primitives.PushBack(goal_orange_sensor);
 		goal_orange_sensor->body = App->physics->AddBody(*goal_orange_sensor, 0, CNT_ORANGE_GOAL);
@@ -763,11 +763,19 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		break;
 
 	case CNT_BLUE_GOAL:
-
+		if (body2->cntType == CNT_BALL)
+		{
+			App->player_2->goalNum++;
+			App->Reset();
+		}
 		break;
 
 	case CNT_ORANGE_GOAL:
-
+		if (body2->cntType == CNT_BALL)
+		{
+			App->player->goalNum++;
+			App->Reset();
+		}
 		break;
 
 	}
