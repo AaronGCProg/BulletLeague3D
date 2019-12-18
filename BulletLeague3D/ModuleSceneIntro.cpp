@@ -732,9 +732,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 
-	char title[100];
-	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  || Player 2: %.1f Km/h | Angular Speed %.1f ", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(),
-		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length());
+	char title[150];
+	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  | Turbo: %.1f || Player 2: %.1f Km/h | Angular Speed %.1f | Turbo: %.1f", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(), App->player->turbo,
+		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length(), App->player_2->turbo);
 	App->window->SetTitle(title);
 
 
@@ -749,6 +749,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		if (body2->cntType == CNT_VEHICLE)
 		{
 			//TODO: Add trubo here
+			
 			body1->sensorOnline = false;
 		}
 		break;

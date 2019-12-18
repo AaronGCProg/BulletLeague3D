@@ -90,7 +90,7 @@ bool ModulePlayer::Start()
 	car.mass = 540.0f;
 	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
-	car.suspensionDamping = 0.88f;
+	car.suspensionDamping = 1.0f;
 	car.maxSuspensionTravelCm = 1000.0f;
 	car.frictionSlip = 50.5;
 	car.maxSuspensionForce = 6000.0f;
@@ -164,6 +164,8 @@ bool ModulePlayer::Start()
 	canDrift = false;
 	secondJump = false;
 
+	turbo = INITIAL_TURBO;
+	
 	
 
 	vehicle = App->physics->AddVehicle(car);
@@ -358,9 +360,10 @@ update_status ModulePlayer::Update(float dt)
 		canDrift = false;
 
 
-	if (App->input->GetKey(Turbo[playerNum - 1]) == KEY_REPEAT)
+	if (App->input->GetKey(Turbo[playerNum - 1]) == KEY_REPEAT && turbo > 0)
 	{
 		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 100.0f));
+		turbo -= 0.5f;
 	}
 
 	if (App->input->GetKey(SwapCamera[playerNum - 1]) == KEY_DOWN)
@@ -420,7 +423,23 @@ btVector3 ModulePlayer::WorldToLocal(float x, float y, float z)
 
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{}
+
+{
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_LITTLE_BOOST)
+	{
+		if(body2->sensorOnline)
+			turbo += 12.0f;
+	}
+
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_BIG_BOOST)
+	{
+		if (body2->sensorOnline)
+			turbo += 100.0f;
+	}
+
+	if (turbo > 100.0f)
+		turbo = 100.0f;
+}
 
 bool ModulePlayer::Reset()
 {
