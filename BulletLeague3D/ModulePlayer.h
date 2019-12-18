@@ -31,7 +31,7 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool Draw();
-	void ReSet();
+	bool Reset();
 	bool CleanUp();
 
 	btVector3 WorldToLocal(float x, float y, float z);

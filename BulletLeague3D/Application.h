@@ -42,6 +42,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	bool Draw();
+	bool Reset();
 
 
 	p2List<ModuleCamera3D*> cam_list;

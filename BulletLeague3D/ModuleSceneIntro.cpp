@@ -697,13 +697,16 @@ bool ModuleSceneIntro::Draw()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-		App->player->ReSet();
+		App->player->Reset();
 
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-		App->player_2->ReSet();
+		App->player_2->Reset();
 
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 		ResetBall();
+
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+		App->Reset();
 
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
@@ -768,6 +771,24 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 }
 
+bool ModuleSceneIntro::Reset()
+{
+	for (uint n = 0; n < primitives.Count(); n++)
+	{
+		if(primitives[n]->body != nullptr)
+		if (primitives[n]->body->cntType == CNT_BIG_BOOST || primitives[n]->body->cntType == CNT_LITTLE_BOOST)
+		{
+			primitives[n]->body->innerSensorTimer = 0.f;
+			primitives[n]->body->sensorOnline = true;
+
+		}
+	}
+
+
+	ResetBall();
+
+	return true;
+}
 
 
 void ModuleSceneIntro::ResetBall()
@@ -783,7 +804,6 @@ void ModuleSceneIntro::ResetBall()
 	App->physics->matchBall->SetAngularVelocity({ 0,0,0 });
 	App->physics->matchBall->SetLinealVelocity({ 0,0,0 });
 	App->physics->matchBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
-
 
 
 }

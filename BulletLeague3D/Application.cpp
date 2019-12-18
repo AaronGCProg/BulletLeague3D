@@ -145,6 +145,20 @@ bool Application::Draw()
 	return ret;
 }
 
+bool Application::Reset()
+{
+	bool ret = true;
+
+	p2List_item<Module*>* item = list_modules.getFirst();
+
+	while (item != NULL && ret == true)
+	{
+		ret = item->data->Reset();
+		item = item->next;
+	}
+	return ret;
+}
+
 void Application::AddModule(Module* mod)
 {
 	list_modules.add(mod);

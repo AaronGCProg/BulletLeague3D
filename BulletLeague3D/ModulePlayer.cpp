@@ -437,7 +437,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		
 }
 
-void ModulePlayer::ReSet()
+bool ModulePlayer::Reset()
 {
 
 	mat4x4 mat;
@@ -463,5 +463,5 @@ void ModulePlayer::ReSet()
 	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
 
 
-
+	return true;
 }
