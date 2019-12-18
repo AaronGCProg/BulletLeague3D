@@ -28,6 +28,7 @@ public:
 	void SetPos(float x, float y, float z);
 	vec3 GetPos() const;
 	vec3 GetFoward();
+	vec3 GetDown();
 	void SetAsSensor(bool IsSensor);
 	void SetRestitution(btScalar restitution);
 	void SetAngularVelocity(btVector3 speed);

@@ -71,12 +71,23 @@ vec3 PhysBody3D::GetFoward()
 
 	mat3x3 rotation(transform);
 
-	vec3 fw(1.f,1.f, 1.f);
+	vec3 fw(0.f,0.f, 1.f);
 
-	fw = rotation * fw;
+	return rotation * fw;
+}
+
+// ---------------------------------------------------------
+vec3 PhysBody3D::GetDown()
+{
+	mat4x4 transform;
+	GetTransform(&transform);
 
 
-	return fw;
+	mat3x3 rotation(transform);
+
+	vec3 down(0.f, -1.f, 0.f);
+
+	return rotation * down;
 }
 
 // ---------------------------------------------------------

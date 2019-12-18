@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "p2Point.h"
 #include "PhysVehicle3D.h"
+#include "glmath.h"
+
 
 struct PhysVehicle3D;
 
@@ -54,7 +56,7 @@ public:
 	int playerNum;
 
 	vec3 initialPos;
-
+	vec3 groundRayCast;
 
 
 private:

@@ -11,7 +11,7 @@
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) : Module(app, start_enabled), vehicle(NULL), playerNum(playerNum)
 {
 	turn = acceleration = brake = 0.0f;
-
+	groundRayCast = { 0,0,0 };
 
 	// INPUTS FOR EACH PLAYER
 	Forward[0] = {SDL_SCANCODE_W };
@@ -388,6 +388,14 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
+	App->physics->RayCast(vehicle->GetPos(), vehicle->GetDown(), groundRayCast);
+		if(length(groundRayCast - vehicle->GetPos()) < 0.01)
+		{
+			wallContact = true;
+		}
+		else
+			wallContact = false;
+
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f", vehicle->GetKmh(), vehicle->myBody->getAngularVelocity().length());
@@ -429,7 +437,6 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_MAP) 
 	{
-		wallContact = true;
 		secondJump = false;
 		jumpImpulse = false;
 
