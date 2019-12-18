@@ -402,8 +402,9 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	char title[80];
-	sprintf_s(title, "%.1f Km/h | Angular Speed %.1f", vehicle->GetKmh(), vehicle->myBody->getAngularVelocity().length());
+	char title[100];
+	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  || Player 2: %.1f Km/h | Angular Speed %.1f ", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(),
+		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length());
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
@@ -419,10 +420,7 @@ update_status ModulePlayer::PostUpdate(float dt)
 bool ModulePlayer::Draw()
 {
 
-	if(playerNum == 1)
-		vehicle->Render(1);
-	else
-		vehicle->Render(2);
+	vehicle->Render(playerNum);
 
 	return true;
 }
