@@ -36,6 +36,18 @@ ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) 
 	SwapCamera[0] = { SDL_SCANCODE_R };
 	SwapCamera[1] = { SDL_SCANCODE_KP_5 };
 
+	switch (playerNum)
+	{
+	case 1:
+		initialPos = { 0, 6, -160 };
+		break;
+
+	case 2:
+		initialPos = { 0, 6, 160 };
+		break;
+
+	}
+
 
 }
 
@@ -162,14 +174,9 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->collision_listeners.add(this);
 	vehicle->cntType = CNT_VEHICLE;
-	if (playerNum == 1)
+	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
+	if (playerNum == 2)
 	{
-		vehicle->SetPos(0, 6, -160);
-	}
-	else
-	{
-		vehicle->SetPos(0, 6, 160);
-
 		mat4x4 trans;
 		vehicle->GetTransform(&trans);
 		trans.rotate(180, {0, -1, 0});
@@ -428,3 +435,31 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		
 }
 
+void ModulePlayer::ReSet()
+{
+
+	mat4x4 mat;
+	btTransform identity;
+	identity.setIdentity();
+	identity.getOpenGLMatrix(&mat);
+
+
+	switch (playerNum)
+	{
+	case 1:
+		break;
+
+	case 2:
+		mat.rotate(180, { 0, -1, 0 });
+		break;
+	}
+
+	vehicle->SetTransform(&mat);
+
+	vehicle->myBody->setAngularVelocity({ 0,0,0 });
+	vehicle->myBody->setLinearVelocity({ 0,0,0 });
+	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
+
+
+
+}

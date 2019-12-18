@@ -100,3 +100,17 @@ void PhysBody3D::SetRestitution(btScalar restitution)
 	this->body->setRestitution(restitution);
 }
 
+// ---------------------------------------------------------
+void PhysBody3D::SetAngularVelocity(btVector3 speed)
+{
+	this->body->setAngularVelocity(speed);
+}
+
+// ---------------------------------------------------------
+void PhysBody3D::SetLinealVelocity(btVector3 speed)
+{
+	this->body->setLinearVelocity(speed);
+}
+
+
+

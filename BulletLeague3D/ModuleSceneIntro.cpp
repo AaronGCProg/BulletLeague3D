@@ -7,6 +7,8 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	ballInitialPos = { 0, 12, 0 };
+
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -19,7 +21,7 @@ bool ModuleSceneIntro::Start()
 
 	//Create MatchBall------------------------------------
 	Sphere* mtBall = new Sphere(3);
-	mtBall->SetPos(0, 12, 0);
+	mtBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.y);
 
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
@@ -34,7 +36,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0, CNT_MAP, 0.9);
+	App->physics->AddBody(*ground,0, CNT_MAP, 0.7);
 
 
 	//Field walls----------------------------------------------
@@ -42,14 +44,14 @@ bool ModuleSceneIntro::Start()
 	wallr->SetPos(-100, 25, 0);
 
 	primitives.PushBack(wallr);
-	App->physics->AddBody(*wallr, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallr, 0, CNT_MAP, 0.7);
 
 
 	Cube* walll = new Cube(10, 50, 400);
 	walll->SetPos(100, 25, 0);
 
 	primitives.PushBack(walll);
-	App->physics->AddBody(*walll, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*walll, 0, CNT_MAP, 0.7);
 
 
 	Cube* wallfr = new Cube(115, 50, 10);
@@ -57,21 +59,21 @@ bool ModuleSceneIntro::Start()
 	wallfr->SetPos(-85, 25, 200);
 
 	primitives.PushBack(wallfr);
-	App->physics->AddBody(*wallfr, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallfr, 0, CNT_MAP, 0.7);
 
 	Cube* wallfl = new Cube(115, 50, 10);
 	wallfl->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallfl->SetPos(85, 25, 200);
 
 	primitives.PushBack(wallfl);
-	App->physics->AddBody(*wallfl, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallfl, 0, CNT_MAP, 0.7);
 
 	Cube* wallft = new Cube(60, 50, 10);
 	wallft->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallft->SetPos(0, 45, 200);
 
 	primitives.PushBack(wallft);
-	App->physics->AddBody(*wallft, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallft, 0, CNT_MAP, 0.7);
 
 
 
@@ -80,7 +82,7 @@ bool ModuleSceneIntro::Start()
 	wallbr->SetPos(-85, 25, -200);
 
 	primitives.PushBack(wallbr);
-	App->physics->AddBody(*wallbr, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallbr, 0, CNT_MAP, 0.7);
 
 
 	Cube* wallbl = new Cube(115, 50, 10);
@@ -88,14 +90,14 @@ bool ModuleSceneIntro::Start()
 	wallbl->SetPos(85, 25, -200);
 
 	primitives.PushBack(wallbl);
-	App->physics->AddBody(*wallbl, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallbl, 0, CNT_MAP, 0.7);
 
 	Cube* wallbt = new Cube(60, 50, 10);
 	wallbt->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
 	wallbt->SetPos(0, 45, -200);
 
 	primitives.PushBack(wallbt);
-	App->physics->AddBody(*wallbt, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*wallbt, 0, CNT_MAP, 0.7);
 
 	//Field celling---------------------------------------------
 	Cube* cell = new Cube(400, 5, 400);
@@ -105,7 +107,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(cell);
 
-	App->physics->AddBody(*cell, 0, CNT_MAP, 0.9);
+	App->physics->AddBody(*cell, 0, CNT_MAP, 0.7);
 
 	//Goals ----------------------------------------------------
 	//Blue
@@ -694,6 +696,15 @@ bool ModuleSceneIntro::Draw()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		App->player->ReSet();
+
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		App->player_2->ReSet();
+
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+		ResetBall();
+
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
 		if (primitives[n]->body != nullptr)
@@ -757,3 +768,22 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 }
 
+
+
+void ModuleSceneIntro::ResetBall()
+{
+
+	mat4x4 mat;
+	btTransform identity;
+	identity.setIdentity();
+	identity.getOpenGLMatrix(&mat);
+
+	App->physics->matchBall->SetTransform(&mat);
+
+	App->physics->matchBall->SetAngularVelocity({ 0,0,0 });
+	App->physics->matchBall->SetLinealVelocity({ 0,0,0 });
+	App->physics->matchBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
+
+
+
+}

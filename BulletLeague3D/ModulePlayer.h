@@ -31,6 +31,7 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool Draw();
+	void ReSet();
 	bool CleanUp();
 
 	btVector3 WorldToLocal(float x, float y, float z);
@@ -51,6 +52,8 @@ public:
 	bool wallContact;
 
 	int playerNum;
+
+	vec3 initialPos;
 
 
 

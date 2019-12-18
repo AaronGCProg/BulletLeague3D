@@ -4,6 +4,7 @@
 #include "p2List.h"
 #include "glmath.h"
 #include "Bullet/include/LinearMath/btScalar.h"
+#include "Bullet/include/LinearMath/btVector3.h"
 
 class btRigidBody;
 class Module;
@@ -29,6 +30,9 @@ public:
 	vec3 GetFoward();
 	void SetAsSensor(bool IsSensor);
 	void SetRestitution(btScalar restitution);
+	void SetAngularVelocity(btVector3 speed);
+	void SetLinealVelocity(btVector3 speed);
+
 
 	ContactType cntType;
 	bool is_sensor, sensorOnline, isInvisible;

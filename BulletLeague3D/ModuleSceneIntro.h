@@ -21,6 +21,8 @@ public:
 	update_status PostUpdate (float dt);
 	bool CleanUp();
 	bool Draw();
+	void Reset();
+	void ResetBall();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
@@ -40,5 +42,7 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	vec3 ballInitialPos;
 
 };
