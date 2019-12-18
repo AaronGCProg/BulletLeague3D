@@ -47,6 +47,8 @@ public:
 	float acceleration;
 	float brake;
 
+	int turbo;
+
 	bool jumpImpulse;
 	bool secondJump;
 	bool canDrift;

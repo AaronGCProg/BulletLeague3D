@@ -92,7 +92,7 @@ bool ModulePlayer::Start()
 
 	car.chassis_size.Set(2, 1, 4);
 	car.chassis_offset.Set(0, 1, 0);
-	car.mass = 500.0f;
+	car.mass = 540.0f;
 	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
 	car.suspensionDamping = 0.88f;
@@ -392,6 +392,7 @@ update_status ModulePlayer::Update(float dt)
 		fieldContact = true;
 		secondJump = false;
 		jumpImpulse = false;
+		vehicle->Push(0.0f, -STICK_FORCE/4, 0.0f);
 	}
 	else
 	{
