@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.8);
+	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
 
 	//Field ground---------------------------------------------
 	Cube* ground = new Cube(400,10,440);
@@ -36,7 +36,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0, CNT_MAP, 0.7);
+	App->physics->AddBody(*ground,0, CNT_MAP, 0.6);
 
 
 	//Field walls----------------------------------------------
@@ -44,14 +44,14 @@ bool ModuleSceneIntro::Start()
 	wallr->SetPos(-100, 25, 0);
 
 	primitives.PushBack(wallr);
-	App->physics->AddBody(*wallr, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallr, 0, CNT_MAP, 0.6);
 
 
 	Cube* walll = new Cube(10, 50, 400);
 	walll->SetPos(100, 25, 0);
 
 	primitives.PushBack(walll);
-	App->physics->AddBody(*walll, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*walll, 0, CNT_MAP, 0.6);
 
 
 	Cube* wallfr = new Cube(115, 50, 10);
@@ -59,21 +59,21 @@ bool ModuleSceneIntro::Start()
 	wallfr->SetPos(-85, 25, 200);
 
 	primitives.PushBack(wallfr);
-	App->physics->AddBody(*wallfr, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallfr, 0, CNT_MAP, 0.6);
 
 	Cube* wallfl = new Cube(115, 50, 10);
 	wallfl->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallfl->SetPos(85, 25, 200);
 
 	primitives.PushBack(wallfl);
-	App->physics->AddBody(*wallfl, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallfl, 0, CNT_MAP, 0.6);
 
 	Cube* wallft = new Cube(60, 50, 10);
 	wallft->color.Set(255.f / 255.f, 79.f / 255.f, 1.f / 255.f);
 	wallft->SetPos(0, 45, 200);
 
 	primitives.PushBack(wallft);
-	App->physics->AddBody(*wallft, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallft, 0, CNT_MAP, 0.6);
 
 
 
@@ -82,7 +82,7 @@ bool ModuleSceneIntro::Start()
 	wallbr->SetPos(-85, 25, -200);
 
 	primitives.PushBack(wallbr);
-	App->physics->AddBody(*wallbr, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallbr, 0, CNT_MAP, 0.6);
 
 
 	Cube* wallbl = new Cube(115, 50, 10);
@@ -90,14 +90,14 @@ bool ModuleSceneIntro::Start()
 	wallbl->SetPos(85, 25, -200);
 
 	primitives.PushBack(wallbl);
-	App->physics->AddBody(*wallbl, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallbl, 0, CNT_MAP, 0.6);
 
 	Cube* wallbt = new Cube(60, 50, 10);
 	wallbt->color.Set(0.f / 255.f, 73.f / 255.f, 255.f / 255.f);
 	wallbt->SetPos(0, 45, -200);
 
 	primitives.PushBack(wallbt);
-	App->physics->AddBody(*wallbt, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*wallbt, 0, CNT_MAP, 0.6);
 
 	//Field celling---------------------------------------------
 	Cube* cell = new Cube(400, 5, 400);
@@ -107,7 +107,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(cell);
 
-	App->physics->AddBody(*cell, 0, CNT_MAP, 0.7);
+	App->physics->AddBody(*cell, 0, CNT_MAP, 0.6);
 
 	//Goals ----------------------------------------------------
 	//Blue

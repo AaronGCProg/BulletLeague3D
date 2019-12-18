@@ -5,9 +5,6 @@
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"
 
-
-
-
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) : Module(app, start_enabled), vehicle(NULL), playerNum(playerNum)
 {
 	turn = acceleration = brake = 0.0f;
@@ -453,7 +450,6 @@ bool ModulePlayer::Reset()
 	identity.setIdentity();
 	identity.getOpenGLMatrix(&mat);
 
-
 	switch (playerNum)
 	{
 	case 1:
@@ -469,7 +465,6 @@ bool ModulePlayer::Reset()
 	vehicle->myBody->setAngularVelocity({ 0,0,0 });
 	vehicle->myBody->setLinearVelocity({ 0,0,0 });
 	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
-
 
 	return true;
 }
