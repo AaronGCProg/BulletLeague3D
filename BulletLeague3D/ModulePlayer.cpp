@@ -61,11 +61,6 @@ bool ModulePlayer::Start()
 
 
 	// Car properties ----------------------------------------
-	car.sensor = new Sphere(1.f);
-	car.sensor->body = App->physics->AddBody(*car.sensor, 0, CNT_VEHICLE_SENSOR);
-	car.sensor->body->SetAsSensor(true);
-	car.sensor->body->collision_listeners.add(this);
-
 
 	//All chassis parts
 	car.num_chassis = 5;
@@ -199,10 +194,6 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
-
-	car.sensor->SetPos(vehicle->GetPos().x, vehicle->GetPos().y, vehicle->GetPos().z);
-
-
 
 	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && fieldContact && vehicle->GetKmh() < 160)
 	{

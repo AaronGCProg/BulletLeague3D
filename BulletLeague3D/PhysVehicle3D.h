@@ -44,7 +44,6 @@ struct VehicleInfo
 	float maxSuspensionForce; // defaults to 6000 / max force to the chassis
 
 	Wheel* wheels;
-	Sphere* sensor;
 	Chassis* chassis;
 	
 	int num_wheels;
