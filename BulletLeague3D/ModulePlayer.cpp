@@ -391,6 +391,7 @@ update_status ModulePlayer::Update(float dt)
 		wallContact = true;
 		secondJump = false;
 		jumpImpulse = false;
+		vehicle->Push(0.0f, -STICK_FORCE/4, 0.0f);
 	}
 	else
 	{
