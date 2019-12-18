@@ -183,8 +183,6 @@ void ModuleRenderer3D::OnResize()
 	float width = (float)App->window->SCREEN_WIDTH;
 	float height =(float)App->window->SCREEN_HEIGHT;
 
-	//glViewport(0, 0, width, height);
-
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();

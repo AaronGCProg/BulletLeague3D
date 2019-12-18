@@ -149,7 +149,7 @@ public:
 		btScalar			m_additionalAngularDampingThresholdSqr;
 		btScalar			m_additionalAngularDampingFactor;
 
-		btRigidBodyConstructionInfo(	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, const btVector3& localInertia=btVector3(0,0,0)):
+		btRigidBodyConstructionInfo(	btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, const btVector3& localInertia=btVector3(0,0,0), btScalar restitution = 0.):
 		m_mass(mass),
 			m_motionState(motionState),
 			m_collisionShape(collisionShape),
@@ -158,7 +158,7 @@ public:
 			m_angularDamping(btScalar(0.)),
 			m_friction(btScalar(0.5)),
 			m_rollingFriction(btScalar(0)),
-			m_restitution(btScalar(0.7)),
+ 			m_restitution(btScalar(restitution)),
 			m_linearSleepingThreshold(btScalar(0.8)),
 			m_angularSleepingThreshold(btScalar(1.f)),
 			m_additionalDamping(false),

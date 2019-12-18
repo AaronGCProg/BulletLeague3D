@@ -203,7 +203,7 @@ bool ModulePhysics3D::CleanUp()
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, ContactType type)
+PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, ContactType type, btScalar restitution)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
 	shapes.add(colShape);
@@ -217,7 +217,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, ContactTy
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 	motions.add(myMotionState);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia,restitution);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody3D* pbody = new PhysBody3D(body, type);
@@ -232,7 +232,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Sphere& sphere, float mass, ContactTy
 
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, ContactType type)
+PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, ContactType type, btScalar restitution)
 {
 	btCollisionShape* colShape = new btBoxShape(btVector3(cube.size.x*0.5f, cube.size.y*0.5f, cube.size.z*0.5f));
 	shapes.add(colShape);
@@ -246,7 +246,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, ContactType t
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 	motions.add(myMotionState);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia, 0.9);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody3D* pbody = new PhysBody3D(body, type);
@@ -259,7 +259,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, float mass, ContactType t
 }
 
 // ---------------------------------------------------------
-PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass, ContactType type)
+PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass, ContactType type,  btScalar restitution)
 {
 	btCollisionShape* colShape = new btCylinderShapeX(btVector3(cylinder.height*0.5f, cylinder.radius, 2000.0f));
 	shapes.add(colShape);
@@ -307,7 +307,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	comShape->calculateLocalInertia(info.mass, localInertia);
 
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(info.mass, myMotionState, comShape, localInertia);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(info.mass, myMotionState, comShape, localInertia, 0.3);
 
 	btRigidBody* body = new btRigidBody(rbInfo);
 	body->setContactProcessingThreshold(BT_LARGE_FLOAT);
