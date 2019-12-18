@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body = App->physics->matchBall =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
+	mtBall->body = matchBall =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
 
 	//Field ground---------------------------------------------
 	Cube* ground = new Cube(400,10,440);
@@ -424,7 +424,6 @@ bool ModuleSceneIntro::Start()
 
 	}
 
-
 	//Center
 	{
 		Cube* little_Pag_center_left = new Cube(1, 0.25f, 1);
@@ -589,7 +588,6 @@ bool ModuleSceneIntro::Start()
 		little_Pag_GMB_right->body->collision_listeners.add(this);
 
 	}
-
 
 	//Between Goal-Mid Field (Orange Side)
 	{
@@ -799,11 +797,11 @@ void ModuleSceneIntro::ResetBall()
 	identity.setIdentity();
 	identity.getOpenGLMatrix(&mat);
 
-	App->physics->matchBall->SetTransform(&mat);
+	matchBall->SetTransform(&mat);
 
-	App->physics->matchBall->SetAngularVelocity({ 0,0,0 });
-	App->physics->matchBall->SetLinealVelocity({ 0,0,0 });
-	App->physics->matchBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
+	matchBall->SetAngularVelocity({ 0,0,0 });
+	matchBall->SetLinealVelocity({ 0,0,0 });
+	matchBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
 
 
 }
