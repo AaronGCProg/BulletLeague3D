@@ -398,13 +398,6 @@ update_status ModulePlayer::Update(float dt)
   		wallContact = false;
 	}
 
-
-
-	char title[100];
-	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  || Player 2: %.1f Km/h | Angular Speed %.1f ", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(),
-		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length());
-	App->window->SetTitle(title);
-
 	return UPDATE_CONTINUE;
 }
 

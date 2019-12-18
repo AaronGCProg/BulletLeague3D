@@ -136,9 +136,9 @@ bool ModuleSceneIntro::Start()
 		App->physics->AddBody(*goal_blue_right, 0);
 
 
-		Cube* goal_blue_back = new Cube(55, 15, 1.5f);
+		Cube* goal_blue_back = new Cube(55, 15, 5.5f);
 		goal_blue_back->color.Set(0.f / 255.f, 143.f / 255.f, 255.f / 255.f);
-		goal_blue_back->SetPos(0, 12.5f, -215);
+		goal_blue_back->SetPos(0, 12.5f, -217.5f);
 
 		primitives.PushBack(goal_blue_back);
 		App->physics->AddBody(*goal_blue_back, 0);
@@ -181,9 +181,9 @@ bool ModuleSceneIntro::Start()
 		App->physics->AddBody(*goal_orange_right, 0);
 
 
-		Cube* goal_orange_back = new Cube(55, 15, 1.5f);
+		Cube* goal_orange_back = new Cube(55, 15, 5.5f);
 		goal_orange_back->color.Set(255.f / 255.f, 149.f / 255.f, 1.f / 255.f);
-		goal_orange_back->SetPos(0, 12.5f, 215);
+		goal_orange_back->SetPos(0, 12.5f, 217.5f);
 
 		primitives.PushBack(goal_orange_back);
 		App->physics->AddBody(*goal_orange_back, 0);
@@ -732,6 +732,10 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 
+	char title[100];
+	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  || Player 2: %.1f Km/h | Angular Speed %.1f ", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(),
+		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length());
+	App->window->SetTitle(title);
 
 
 	return UPDATE_CONTINUE;
