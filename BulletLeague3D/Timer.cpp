@@ -26,6 +26,12 @@ void Timer::Stop()
 }
 
 // ---------------------------------------------
+void Timer::ReStart()
+{
+	running = true;
+}
+
+// ---------------------------------------------
 Uint32 Timer::Read()
 {
 	if(running == true)

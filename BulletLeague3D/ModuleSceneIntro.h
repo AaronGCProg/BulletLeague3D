@@ -10,6 +10,15 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
+enum matchState
+{
+	MT_NONE,
+
+	MT_STOP,
+	MT_RUNNING,
+	MT_GOAL
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -45,6 +54,12 @@ public:
 
 	vec3 ballInitialPos;
 
-	PhysBody3D* matchBall = nullptr;
+	Primitive* matchBall = nullptr;
 
+	Timer matchtimer;
+	Timer matchStoppedTimer;
+	matchState state;
+
+	int countDownFx;
+	int goalFx;
 };

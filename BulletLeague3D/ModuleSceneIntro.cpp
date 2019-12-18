@@ -8,7 +8,7 @@
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	ballInitialPos = { 0, 12, 0 };
-
+	countDownFx = 0;
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -26,7 +26,8 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body = matchBall =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
+	mtBall->body =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
+	matchBall = mtBall;
 
 	//Field ground---------------------------------------------
 	Cube* ground = new Cube(400,10,440);
@@ -652,6 +653,14 @@ bool ModuleSceneIntro::Start()
 
 	}
 
+	matchtimer.Start();
+	matchStoppedTimer.Start();
+	state = MT_STOP;
+
+	countDownFx = App->audio->LoadFx("assets/sound/sfx/countdown.wav");
+	goalFx = App->audio->LoadFx("assets/sound/sfx/goal.wav");
+	App->audio->PlayFx(countDownFx, 0);
+
 
 	bool ret = true;
 
@@ -706,6 +715,46 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		App->Reset();
 
+	switch (state)
+	{
+	case MT_STOP:
+		matchtimer.Stop();
+		if (matchBall->isInvisible)
+		{
+			matchBall->SetInvisible(false);
+			matchBall->body->noCollisionResponse = false;
+			App->audio->PlayFx(countDownFx, 0);
+
+		}
+
+		if (matchStoppedTimer.Read() > 4000)
+		{
+			matchStoppedTimer.ReStart();
+			matchStoppedTimer.Stop();
+			matchtimer.ReStart();
+			state = MT_RUNNING;
+		}
+
+		break;
+
+	case MT_RUNNING:
+
+		break;
+
+
+	case MT_GOAL:
+		matchStoppedTimer.ReStart();
+
+		if (matchStoppedTimer.Read() > 3000)
+		{
+			matchStoppedTimer.Start();
+			App->Reset();
+		}
+
+		break;
+
+	}
+
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
 		if (primitives[n]->body != nullptr)
@@ -732,9 +781,18 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 
-	char title[150];
-	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  | Turbo: %.1f || Player 2: %.1f Km/h | Angular Speed %.1f | Turbo: %.1f", App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(), App->player->turbo,
-		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length(), App->player_2->turbo);
+	Uint32 currentTime = matchtimer.Read();
+	uint miliseconds = currentTime % 1000;
+	uint seconds = (currentTime / 1000) % 60;
+	uint minutes = (currentTime / 1000) / 60;
+
+
+	char title[170];
+	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  | Turbo: %.1f | Goals: %d || Player 2: %.1f Km/h | Angular Speed %.1f | Turbo: %.1f| Goals: %d ||| Timer: %d:%d:%d",
+		App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(), App->player->turbo, App->player->goalNum,
+		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length(), App->player_2->turbo, App->player_2->goalNum,
+		minutes, seconds, miliseconds);
+
 	App->window->SetTitle(title);
 
 
@@ -747,9 +805,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{
 	case CNT_BIG_BOOST:
 		if (body2->cntType == CNT_VEHICLE)
-		{
-			//TODO: Add trubo here
-			
+		{			
 			body1->sensorOnline = false;
 		}
 		break;
@@ -757,24 +813,34 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	case CNT_LITTLE_BOOST:
 		if (body2->cntType == CNT_VEHICLE)
 		{
-			//TODO: Add trubo here
 			body1->sensorOnline = false;
 		}
 		break;
 
 	case CNT_BLUE_GOAL:
-		if (body2->cntType == CNT_BALL)
+		if (body2->cntType == CNT_BALL && !body2->noCollisionResponse)
 		{
 			App->player_2->goalNum++;
-			App->Reset();
+			App->audio->PlayFx(goalFx);
+			matchStoppedTimer.Start();
+
+			matchBall->SetInvisible(true);
+			matchBall->body->noCollisionResponse = true;
+			state = MT_GOAL;
 		}
 		break;
 
 	case CNT_ORANGE_GOAL:
-		if (body2->cntType == CNT_BALL)
+		if (body2->cntType == CNT_BALL && !body2->noCollisionResponse)
 		{
 			App->player->goalNum++;
-			App->Reset();
+			App->audio->PlayFx(goalFx);
+			matchStoppedTimer.Start();
+
+			matchBall->SetInvisible(true);
+			matchBall->body->noCollisionResponse = true;
+			state = MT_GOAL;
+
 		}
 		break;
 
@@ -795,6 +861,7 @@ bool ModuleSceneIntro::Reset()
 		}
 	}
 
+	state = MT_STOP;
 
 	ResetBall();
 
@@ -810,11 +877,11 @@ void ModuleSceneIntro::ResetBall()
 	identity.setIdentity();
 	identity.getOpenGLMatrix(&mat);
 
-	matchBall->SetTransform(&mat);
+	matchBall->body->SetTransform(&mat);
 
-	matchBall->SetAngularVelocity({ 0,0,0 });
-	matchBall->SetLinealVelocity({ 0,0,0 });
-	matchBall->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
+	matchBall->body->SetAngularVelocity({ 0,0,0 });
+	matchBall->body->SetLinealVelocity({ 0,0,0 });
+	matchBall->body->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
 
 
 }

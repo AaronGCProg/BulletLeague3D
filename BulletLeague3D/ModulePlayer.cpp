@@ -192,8 +192,104 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
+update_status ModulePlayer::PreUpdate(float dt)
+{
+	if(App->scene_intro->state != MT_STOP)
+	PlayerInputs();
+
+	return UPDATE_CONTINUE;
+}
+
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
+{
+
+	groundRayCast = App->physics->RayCast({ this->vehicle->GetPos().x,this->vehicle->GetPos().y+1, this->vehicle->GetPos().z }, vehicle->GetDown());
+	if (length(groundRayCast) < 2.f )
+	{
+		fieldContact = true;
+		secondJump = false;
+		jumpImpulse = false;
+		vehicle->Push(0.0f, -STICK_FORCE/4, 0.0f);
+	}
+	else
+  		fieldContact = false;
+
+	return UPDATE_CONTINUE;
+}
+
+update_status ModulePlayer::PostUpdate(float dt)
+{
+
+
+	return UPDATE_CONTINUE;
+}
+
+bool ModulePlayer::Draw()
+{
+
+	vehicle->Render(playerNum);
+
+	return true;
+}
+
+// World to Local forces translation
+btVector3 ModulePlayer::WorldToLocal(float x, float y, float z) 
+{
+	btVector3 relativeForce = btVector3(x, y, z);
+	btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
+	btVector3 correctedForce = localRot * relativeForce;
+
+	return correctedForce;
+}
+
+
+void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+{
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_LITTLE_BOOST)
+	{
+		if(body2->sensorOnline)
+			turbo += 12.0f;
+	}
+
+	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_BIG_BOOST)
+	{
+		if (body2->sensorOnline)
+			turbo += 100.0f;
+	}
+
+	if (turbo > 100.0f)
+		turbo = 100.0f;
+}
+
+bool ModulePlayer::Reset()
+{
+
+	mat4x4 mat;
+	btTransform identity;
+	identity.setIdentity();
+	identity.getOpenGLMatrix(&mat);
+
+	switch (playerNum)
+	{
+	case 1:
+		break;
+
+	case 2:
+		mat.rotate(180, { 0, -1, 0 });
+		break;
+	}
+
+	vehicle->SetTransform(&mat);
+
+	vehicle->myBody->setAngularVelocity({ 0,0,0 });
+	vehicle->myBody->setLinearVelocity({ 0,0,0 });
+	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
+
+	return true;
+}
+
+void ModulePlayer::PlayerInputs()
 {
 	turn = acceleration = brake = 0.0f;
 
@@ -380,90 +476,4 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	groundRayCast = App->physics->RayCast({ this->vehicle->GetPos().x,this->vehicle->GetPos().y+1, this->vehicle->GetPos().z }, vehicle->GetDown());
-	if (length(groundRayCast) < 2.f )
-	{
-		fieldContact = true;
-		secondJump = false;
-		jumpImpulse = false;
-		vehicle->Push(0.0f, -STICK_FORCE/4, 0.0f);
-	}
-	else
-	{
-  		fieldContact = false;
-	}
-
-	return UPDATE_CONTINUE;
-}
-
-update_status ModulePlayer::PostUpdate(float dt)
-{
-
-
-	return UPDATE_CONTINUE;
-}
-
-bool ModulePlayer::Draw()
-{
-
-	vehicle->Render(playerNum);
-
-	return true;
-}
-
-// World to Local forces translation
-btVector3 ModulePlayer::WorldToLocal(float x, float y, float z) 
-{
-	btVector3 relativeForce = btVector3(x, y, z);
-	btMatrix3x3& localRot = vehicle->myBody->getWorldTransform().getBasis();
-	btVector3 correctedForce = localRot * relativeForce;
-
-	return correctedForce;
-}
-
-
-void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-
-{
-	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_LITTLE_BOOST)
-	{
-		if(body2->sensorOnline)
-			turbo += 12.0f;
-	}
-
-	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_BIG_BOOST)
-	{
-		if (body2->sensorOnline)
-			turbo += 100.0f;
-	}
-
-	if (turbo > 100.0f)
-		turbo = 100.0f;
-}
-
-bool ModulePlayer::Reset()
-{
-
-	mat4x4 mat;
-	btTransform identity;
-	identity.setIdentity();
-	identity.getOpenGLMatrix(&mat);
-
-	switch (playerNum)
-	{
-	case 1:
-		break;
-
-	case 2:
-		mat.rotate(180, { 0, -1, 0 });
-		break;
-	}
-
-	vehicle->SetTransform(&mat);
-
-	vehicle->myBody->setAngularVelocity({ 0,0,0 });
-	vehicle->myBody->setLinearVelocity({ 0,0,0 });
-	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
-
-	return true;
 }

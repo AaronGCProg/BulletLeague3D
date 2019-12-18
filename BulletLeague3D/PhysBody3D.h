@@ -36,7 +36,7 @@ public:
 
 
 	ContactType cntType;
-	bool is_sensor, sensorOnline, isInvisible;
+	bool is_sensor, sensorOnline, isInvisible, noCollisionResponse;
 	float innerSensorTimer;
 
 private:

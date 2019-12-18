@@ -146,7 +146,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (lookAtBall)
 		{
-			vec3 dir = vehiclePos -App->scene_intro->matchBall->GetPos();
+			vec3 dir = vehiclePos -App->scene_intro->matchBall->body->GetPos();
 
 			//Check if the cam is too close to the ball
 			if (length(dir) < 10)
@@ -171,7 +171,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
 
-			LookAt(App->scene_intro->matchBall->GetPos());
+			LookAt(App->scene_intro->matchBall->body->GetPos());
 		}
 		else
 		{

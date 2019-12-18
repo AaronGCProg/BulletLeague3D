@@ -3,10 +3,10 @@
 #include "Bullet/include/btBulletDynamicsCommon.h"
 
 // =================================================
-PhysBody3D::PhysBody3D(btRigidBody* body) : body(body), cntType(CNT_UNKNOWN), innerSensorTimer(0.0f), is_sensor(false)
+PhysBody3D::PhysBody3D(btRigidBody* body) : body(body), cntType(CNT_UNKNOWN), innerSensorTimer(0.0f), is_sensor(false), noCollisionResponse(false)
 {}
 
-PhysBody3D::PhysBody3D(btRigidBody* body, ContactType type) : body(body), cntType(type), innerSensorTimer(0.0f), is_sensor(false)
+PhysBody3D::PhysBody3D(btRigidBody* body, ContactType type) : body(body), cntType(type), innerSensorTimer(0.0f), is_sensor(false), noCollisionResponse(false)
 {}
 
 // ---------------------------------------------------------

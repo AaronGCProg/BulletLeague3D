@@ -114,6 +114,7 @@ update_status ModulePhysics3D::Update(float dt)
 				p2List_item<Module*>* item = pbodyA->collision_listeners.getFirst();
 				while (item)
 				{
+					if(!pbodyA->noCollisionResponse)
 					item->data->OnCollision(pbodyA, pbodyB);
 					item = item->next;
 				}
@@ -121,6 +122,7 @@ update_status ModulePhysics3D::Update(float dt)
 				item = pbodyB->collision_listeners.getFirst();
 				while (item)
 				{
+					if (!pbodyB->noCollisionResponse)
 					item->data->OnCollision(pbodyB, pbodyA);
 					item = item->next;
 				}

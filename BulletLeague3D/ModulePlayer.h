@@ -31,6 +31,7 @@ public:
 	virtual ~ModulePlayer();
 
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 	bool Draw();
@@ -39,6 +40,7 @@ public:
 
 	btVector3 WorldToLocal(float x, float y, float z);
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void PlayerInputs();
 
 public:
 
