@@ -82,7 +82,6 @@ vec3 PhysBody3D::GetDown()
 	mat4x4 transform;
 	GetTransform(&transform);
 
-
 	mat3x3 rotation(transform);
 
 	vec3 down(0.f, -1.f, 0.f);

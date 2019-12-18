@@ -206,9 +206,9 @@ update_status ModulePlayer::Update(float dt)
 
 
 
-	if(App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact && vehicle->GetKmh() < 160)
+	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && wallContact && vehicle->GetKmh() < 160)
 	{
-		acceleration = MAX_ACCELERATION;		
+		acceleration = MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
@@ -223,19 +223,19 @@ update_status ModulePlayer::Update(float dt)
 		}
 	}
 
-	if(App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
-		if(turn < TURN_DEGREES && !canDrift)
-			turn +=  TURN_DEGREES;
-		else if (turn > -TURN_DEGREES && canDrift) 
+		if (turn < TURN_DEGREES && !canDrift)
+			turn += TURN_DEGREES;
+		else if (turn > -TURN_DEGREES && canDrift)
 		{
 			turn += TURN_DEGREES;
-			
+
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
 		}
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
-	
+
 	}
 	else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
@@ -258,38 +258,38 @@ update_status ModulePlayer::Update(float dt)
 					vehicle->myBody->applyTorque(WorldToLocal(0.0f, 500.0f, 0.0f));
 			}
 		}
-			
+
 	}
 
 
 
-	if(App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
-		if(turn > -TURN_DEGREES && !canDrift)
+		if (turn > -TURN_DEGREES && !canDrift)
 			turn -= TURN_DEGREES;
-		else if (turn > -TURN_DEGREES && canDrift) 
+		else if (turn > -TURN_DEGREES && canDrift)
 		{
 			turn -= TURN_DEGREES;
-			
+
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -10000.0f, 0.0f));
 		}
-			
+
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
-	
+
 	}
 	else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT && !wallContact)
 	{
 
-		if(vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
+		if (vehicle->myBody->getAngularVelocity().length() < CAP_ACROBATIC_SPEED)
 		{
-			if (secondJump) 
+			if (secondJump)
 			{
 				if (vehicle->myBody->getAngularVelocity().length() < SMOOTH_ACROBATIC_SPEED)
 					vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 5000.0f));
 				else
 					vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 500.0f));
-			}			
-			else 
+			}
+			else
 			{
 				if (vehicle->myBody->getAngularVelocity().length() < SMOOTH_ACROBATIC_SPEED)
 					vehicle->myBody->applyTorque(WorldToLocal(0.0f, -5000.0f, 0.0f));
@@ -297,12 +297,12 @@ update_status ModulePlayer::Update(float dt)
 					vehicle->myBody->applyTorque(WorldToLocal(0.0f, -500.0f, 0.0f));
 			}
 		}
-		
+
 	}
 
-	if(App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && wallContact)
+	if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && wallContact)
 	{
-		acceleration = -MAX_ACCELERATION ;
+		acceleration = -MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
@@ -320,43 +320,43 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && wallContact)
 	{
 		vehicle->myBody->setAngularVelocity({ 0,0,0 });
-		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);	
+		vehicle->Push(0.0f, JUMP_FORCE, 0.0f);
 		wallContact = false;
-		
+
 	}
-	else if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && !wallContact&& !secondJump)
-	{			
+	else if (App->input->GetKey(Jump[playerNum - 1]) == KEY_DOWN && !wallContact && !secondJump)
+	{
 		secondJump = true;
 
 		vehicle->Push(0.0f, IMPULSE_FORCE, 0.0f);
-			
-	
+
+
 		if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, 300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(115000.0f, 0.0f, 0.0f));
-		}		
+		}
 		else if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(0.0f, 0.0f, -300000.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(-115000.0f, 0.0f, 0.0f));
-		}		
+		}
 		else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(-400000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 45000.0f));
-		}			
+		}
 		else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
 			vehicle->myBody->applyCentralForce(WorldToLocal(400000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -45000.0f));
 		}
-			
-	
+
+
 	}
 
 	if (App->input->GetKey(Brake[playerNum - 1]) == KEY_REPEAT)
@@ -365,7 +365,7 @@ update_status ModulePlayer::Update(float dt)
 		canDrift = true;
 
 	}
-	else if(App->input->GetKey(Brake[playerNum - 1]) == KEY_UP)
+	else if (App->input->GetKey(Brake[playerNum - 1]) == KEY_UP)
 		canDrift = false;
 
 
@@ -374,27 +374,32 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 100.0f));
 	}
 
-	if (App->input->GetKey(SwapCamera[playerNum - 1]) == KEY_DOWN) 
+	if (App->input->GetKey(SwapCamera[playerNum - 1]) == KEY_DOWN)
 	{
-		if(playerNum == 1)
+		if (playerNum == 1)
 			App->camera->lookAtBall = !App->camera->lookAtBall;
 		else
 			App->camera_2->lookAtBall = !App->camera_2->lookAtBall;
 
 	}
-		
+
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
-	App->physics->RayCast(vehicle->GetPos(), vehicle->GetDown(), groundRayCast);
-		if(length(groundRayCast - vehicle->GetPos()) < 0.01)
-		{
-			wallContact = true;
-		}
-		else
-			wallContact = false;
+	groundRayCast = App->physics->RayCast({ this->vehicle->GetPos().x,this->vehicle->GetPos().y+1, this->vehicle->GetPos().z }, vehicle->GetDown());
+	if (length(groundRayCast) < 2.f )
+	{
+		wallContact = true;
+		secondJump = false;
+		jumpImpulse = false;
+	}
+	else
+	{
+  		wallContact = false;
+	}
+
 
 
 	char title[80];
@@ -437,8 +442,6 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_MAP) 
 	{
-		secondJump = false;
-		jumpImpulse = false;
 
 	}
 		

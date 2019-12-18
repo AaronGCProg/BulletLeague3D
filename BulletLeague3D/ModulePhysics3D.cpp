@@ -390,7 +390,7 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 }
 
 
-PhysBody3D* ModulePhysics3D::RayCast(const vec3& Origin, const vec3& Direction, vec3& HitPoint)
+vec3 ModulePhysics3D::RayCast(const vec3& Origin, const vec3& Direction)
 {
 	//TODO: NEW CODE
 	//A snippet of new code that may be useful for you. Nothing to do here really
@@ -403,12 +403,16 @@ PhysBody3D* ModulePhysics3D::RayCast(const vec3& Origin, const vec3& Direction, 
 
 	// Perform raycast
 	world->rayTest(Start, End, RayCallback);
-	if (RayCallback.hasHit()) {
+	if (RayCallback.hasHit()) 
+	{
+		vec3 HitPoint = vec3(RayCallback.m_hitPointWorld.x(), RayCallback.m_hitPointWorld.y(), RayCallback.m_hitPointWorld.z());
 
-		HitPoint = vec3(RayCallback.m_hitPointWorld.x(), RayCallback.m_hitPointWorld.y(), RayCallback.m_hitPointWorld.z());
-		return (PhysBody3D*)RayCallback.m_collisionObject->getUserPointer();
+		vec3 toRet(Origin - HitPoint);
+
+		return toRet;
 	}
-	return nullptr;
+
+	return vec3(1000.f, 1000.f, 1000.f);
 }
 
 // =============================================
