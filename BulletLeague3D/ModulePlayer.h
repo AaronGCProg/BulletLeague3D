@@ -17,8 +17,8 @@ struct PhysVehicle3D;
 #define MAX_TORQUE 2000.0f
 #define STICK_FORCE 10.0f
 
-#define PLAYERS 2
 
+#define PLAYERS 2
 
 
 class ModulePlayer : public Module
@@ -59,6 +59,7 @@ public:
 
 private:
 
+
 	// INPUTS FOR EACH PLAYER
 	SDL_Scancode Forward[PLAYERS];
 	SDL_Scancode Backward[PLAYERS];
@@ -68,5 +69,6 @@ private:
 	SDL_Scancode Turbo[PLAYERS];
 	SDL_Scancode Brake[PLAYERS];
 	SDL_Scancode SwapCamera[PLAYERS];
+
 	
 };

@@ -5,10 +5,12 @@
 #include "PhysBody3D.h"
 #include "ModuleSceneIntro.h"
 
+
+
+
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled, int playerNum) : Module(app, start_enabled), vehicle(NULL), playerNum(playerNum)
 {
 	turn = acceleration = brake = 0.0f;
-
 
 
 	// INPUTS FOR EACH PLAYER
@@ -344,13 +346,13 @@ update_status ModulePlayer::Update(float dt)
 		else if (App->input->GetKey(Right[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
-			vehicle->myBody->applyCentralForce(WorldToLocal(-300000.0f, 0.0f, 0.0f));
+			vehicle->myBody->applyCentralForce(WorldToLocal(-400000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, 45000.0f));
 		}			
 		else if (App->input->GetKey(Left[playerNum - 1]) == KEY_REPEAT)
 		{
 			jumpImpulse = true;
-			vehicle->myBody->applyCentralForce(WorldToLocal(300000.0f, 0.0f, 0.0f));
+			vehicle->myBody->applyCentralForce(WorldToLocal(400000.0f, 0.0f, 0.0f));
 			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 0.0f, -45000.0f));
 		}
 			
