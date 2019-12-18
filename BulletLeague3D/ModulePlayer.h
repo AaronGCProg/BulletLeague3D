@@ -51,9 +51,10 @@ public:
 	bool secondJump;
 	bool canDrift;
 
-	bool wallContact;
+	bool fieldContact;
 
 	int playerNum;
+	int goalNum;
 
 	vec3 initialPos;
 	vec3 groundRayCast;

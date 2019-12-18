@@ -278,6 +278,7 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cylinder& cylinder, float mass, Conta
 	btRigidBody* body = new btRigidBody(rbInfo);
 	PhysBody3D* pbody = new PhysBody3D(body, type);
 
+
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);
 	bodies.add(pbody);
