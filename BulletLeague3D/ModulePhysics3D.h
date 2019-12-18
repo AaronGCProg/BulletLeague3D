@@ -39,7 +39,6 @@ public:
 	vec3 RayCast(const vec3& Origin, const vec3& Direction);
 
 
-	PhysBody3D* matchBall = nullptr;
 
 
 private:

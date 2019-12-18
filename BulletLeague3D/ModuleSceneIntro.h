@@ -45,4 +45,6 @@ public:
 
 	vec3 ballInitialPos;
 
+	PhysBody3D* matchBall = nullptr;
+
 };
