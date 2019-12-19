@@ -90,8 +90,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 	case MT_STOP:
 		//Stop the timer if the players are not playing
-		if(matchtimer.running)
-		matchtimer.Stop();
+		if (matchtimer.running)
+		{
+			matchtimer.Stop();
+		}
 
 		if (matchBall->isInvisible)
 		{
@@ -106,6 +108,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			matchStoppedTimer.ReStart();
 			matchStoppedTimer.Stop();
 			matchtimer.ReStart();
+
 			state = MT_RUNNING;
 		}
 
@@ -281,7 +284,6 @@ bool ModuleSceneIntro::Reset()
 
 			}
 	}
-
 	state = MT_STOP;
 
 	ResetBall();
@@ -323,13 +325,16 @@ void ModuleSceneIntro::ApplyGoalForce(PhysVehicle3D* scoringPlayer, PhysVehicle3
 {
 	vec3 dir = scoringPlayer->GetPos() - App->scene_intro->matchBall->body->GetPos();
 
-	if (length(dir) < 50)
-		scoringPlayer->myBody->applyCentralForce({ 15000000 / dir.x, 15000000 / dir.z, 15000000 / dir.y });
+	float distanceToBall = length(dir);
+
+	if (distanceToBall < 70)
+		scoringPlayer->myBody->applyCentralForce({ 10000000 / dir.x, 10000000 / dir.y, 10000000 / dir.z });
 
 	dir = playerThatWasScored->GetPos() - App->scene_intro->matchBall->body->GetPos();
+	distanceToBall = length(dir);
 
-	if (length(dir) < 30)
-		playerThatWasScored->myBody->applyCentralForce({ 10000000 / dir.x, 10000000 / dir.z, 10000000 / dir.y });
+	if (length(dir) < 50)
+		playerThatWasScored->myBody->applyCentralForce({ 9000000 / dir.x, 9000000 / dir.y, 9000000 / dir.z });
 
 
 }
@@ -549,6 +554,11 @@ void ModuleSceneIntro::LoadMapAssets()
 				bigPag_mid_left->body->SetAsSensor(true);
 				bigPag_mid_left->body->collision_listeners.add(this);
 
+				mat4x4 trans;
+				bigPag_mid_left->body->GetTransform(&trans);
+				trans.rotate(90, { 0,0,1 });
+				bigPag_mid_left->body->SetTransform(&trans);
+
 
 				Cylinder* bigPag_mid_right = new Cylinder(3.5f, 1.5f);
 
@@ -560,6 +570,10 @@ void ModuleSceneIntro::LoadMapAssets()
 				bigPag_mid_right->body = App->physics->AddBody(*bigPag_mid_right, 0, CNT_BIG_BOOST);
 				bigPag_mid_right->body->SetAsSensor(true);
 				bigPag_mid_right->body->collision_listeners.add(this);
+
+				bigPag_mid_right->body->GetTransform(&trans);
+				trans.rotate(90, { 0,0,1 });
+				bigPag_mid_right->body->SetTransform(&trans);
 			}
 
 
@@ -613,6 +627,10 @@ void ModuleSceneIntro::LoadMapAssets()
 				bigPag_front_left->body->SetAsSensor(true);
 				bigPag_front_left->body->collision_listeners.add(this);
 
+				mat4x4 trans;
+				bigPag_front_left->body->GetTransform(&trans);
+				trans.rotate(90, { 0,0,1 });
+				bigPag_front_left->body->SetTransform(&trans);
 
 				Cylinder* bigPag_front_right = new Cylinder(3.5f, 1.5f);
 
@@ -621,9 +639,15 @@ void ModuleSceneIntro::LoadMapAssets()
 
 				primitives.PushBack(bigPag_front_right);
 
+
 				bigPag_front_right->body = App->physics->AddBody(*bigPag_front_right, 0, CNT_BIG_BOOST);
 				bigPag_front_right->body->SetAsSensor(true);
 				bigPag_front_right->body->collision_listeners.add(this);
+
+				bigPag_front_right->body->GetTransform(&trans);
+				trans.rotate(90, { 0,0,1 });
+				bigPag_front_right->body->SetTransform(&trans);
+
 			}
 
 		}

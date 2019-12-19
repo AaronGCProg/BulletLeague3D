@@ -194,7 +194,7 @@ bool ModulePlayer::CleanUp()
 
 update_status ModulePlayer::PreUpdate(float dt)
 {
-	if(App->scene_intro->state != MT_STOP)
+	if(App->scene_intro->state != MT_STOP && App->scene_intro->matchtimer.running)
 	PlayerInputs();
 
 	return UPDATE_CONTINUE;
@@ -227,9 +227,7 @@ update_status ModulePlayer::PostUpdate(float dt)
 
 bool ModulePlayer::Draw()
 {
-
 	vehicle->Render(playerNum);
-
 	return true;
 }
 
@@ -288,8 +286,8 @@ bool ModulePlayer::Reset()
 
 	vehicle->SetTransform(&mat);
 
-	vehicle->myBody->setAngularVelocity({ 0,0,0 });
-	vehicle->myBody->setLinearVelocity({ 0,0,0 });
+	vehicle->ResetSpeed();
+
 	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
 
 	this->turbo = 33.f;

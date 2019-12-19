@@ -136,3 +136,10 @@ float PhysVehicle3D::GetKmh() const
 	return vehicle->getCurrentSpeedKmHour();
 }
 
+// ----------------------------------------------------------------------------
+void PhysVehicle3D::ResetSpeed() 
+{
+	this->SetAngularVelocity({ 0,0,0 });
+	this->SetLinealVelocity({ 0,0,0 });
+}
+
