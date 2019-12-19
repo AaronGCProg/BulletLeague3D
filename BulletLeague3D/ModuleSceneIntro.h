@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Primitive.h"
 #include "Bullet/include/LinearMath/btScalar.h"
+#include "PhysVehicle3D.h"
 
 #define MAX_SNAKE 2
 
@@ -34,6 +35,7 @@ public:
 	bool Reset();
 	void ResetBall();
 	void RestartMatch();
+	void ApplyGoalForce(PhysVehicle3D* scoringPlayer, PhysVehicle3D* playerThatWasScored);
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
@@ -71,5 +73,5 @@ public:
 
 	uint matchTime;
 
-	SDL_Texture* fontTexture;
+	//SDL_Texture* fontTexture;
 };

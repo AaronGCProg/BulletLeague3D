@@ -14,7 +14,7 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled, uint ma
 	readyToRestart = false;
 	ballContactGround = false;
 
-	fontTexture = App->fonts->Print("AAAAAAAAAAAAAAAAA", { 255,255,255,255 }, App->fonts->default);
+	//fontTexture = App->fonts->Print("Test", { 255,255,255,255 }, App->fonts->default);
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -32,18 +32,18 @@ bool ModuleSceneIntro::Start()
 	primitives.PushBack(mtBall);
 	mtBall->color.Set(175.f / 255.f, 175.f / 255.f, 175.f / 255.f);
 
-	mtBall->body =  App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
+	mtBall->body = App->physics->AddBody(*mtBall, 6.f, CNT_BALL, 0.7);
 	matchBall = mtBall;
 
 	//Field ground---------------------------------------------
-	Cube* ground = new Cube(400,10,440);
+	Cube* ground = new Cube(400, 10, 440);
 
-	ground->color.Set(106.f / 255.f,70.f / 255.f,42.f /255.f);
+	ground->color.Set(106.f / 255.f, 70.f / 255.f, 42.f / 255.f);
 	ground->SetPos(0, 0, 0);
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0, CNT_GROUND, 0.6)->collision_listeners.add(this);
+	App->physics->AddBody(*ground, 0, CNT_GROUND, 0.6)->collision_listeners.add(this);
 
 
 	//Field walls----------------------------------------------
@@ -700,8 +700,8 @@ bool ModuleSceneIntro::Draw()
 {
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
-		if(!primitives[n]->isInvisible)
-		primitives[n]->Render();
+		if (!primitives[n]->isInvisible)
+			primitives[n]->Render();
 	}
 
 
@@ -712,7 +712,6 @@ bool ModuleSceneIntro::Draw()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	// HERE
-	App->renderer3D->Blit(fontTexture, 10, 10, nullptr, 1.0f);
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		App->player->Reset();
@@ -723,8 +722,21 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 		ResetBall();
 
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && state != MT_STOP)
+	{
+		matchStoppedTimer.Start();
+		matchBall->SetInvisible(true);
 		App->Reset();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && state != MT_STOP)
+	{
+		matchStoppedTimer.Start();
+		matchBall->SetInvisible(true);
+		RestartMatch();
+		App->Reset();
+	}
+
 
 	switch (state)
 	{
@@ -791,7 +803,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			primitives[n]->Update();
 
-			PhysBody3D* body =  primitives[n]->body;
+			PhysBody3D* body = primitives[n]->body;
 
 			if (body->is_sensor && !body->sensorOnline)
 			{
@@ -800,7 +812,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 				primitives[n]->body->innerSensorTimer += dt;
 
-				if (primitives[n]->body->innerSensorTimer > 3.f)
+				if (primitives[n]->body->innerSensorTimer > 5.f)
 				{
 					primitives[n]->body->sensorOnline = true;
 					primitives[n]->color.Set(247.f / 255.f, 240.f / 255.f, 62.f / 255.f);
@@ -815,7 +827,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	uint seconds = 0;
 	uint minutes = 0;
 
-	Uint32 currentTime =60000 *3 - matchtimer.Read();
+	Uint32 currentTime = 60000 * 3 - matchtimer.Read();
 
 	if (matchtimer.Read() < 60000 * 2)
 	{
@@ -823,7 +835,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		seconds = (currentTime / 1000) % 60;
 		minutes = (currentTime / 1000) / 60;
 	}
-	else if(!readyToRestart)
+	else if (!readyToRestart)
 		readyToRestart = true;
 
 
@@ -845,7 +857,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{
 	case CNT_BIG_BOOST:
 		if (body2->cntType == CNT_VEHICLE)
-		{			
+		{
 			body1->sensorOnline = false;
 		}
 		break;
@@ -863,6 +875,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			App->player_2->goalNum++;
 			App->audio->PlayFx(goalFx);
 			matchStoppedTimer.Start();
+			ApplyGoalForce(App->player->vehicle, App->player->vehicle);
+
 
 			matchBall->SetInvisible(true);
 			matchBall->body->noCollisionResponse = true;
@@ -876,6 +890,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			App->player->goalNum++;
 			App->audio->PlayFx(goalFx);
 			matchStoppedTimer.Start();
+			ApplyGoalForce(App->player->vehicle, App->player_2->vehicle);
 
 			matchBall->SetInvisible(true);
 			matchBall->body->noCollisionResponse = true;
@@ -900,13 +915,13 @@ bool ModuleSceneIntro::Reset()
 {
 	for (uint n = 0; n < primitives.Count(); n++)
 	{
-		if(primitives[n]->body != nullptr)
-		if (primitives[n]->body->cntType == CNT_BIG_BOOST || primitives[n]->body->cntType == CNT_LITTLE_BOOST)
-		{
-			primitives[n]->body->innerSensorTimer = 0.f;
-			primitives[n]->body->sensorOnline = true;
+		if (primitives[n]->body != nullptr)
+			if (primitives[n]->body->cntType == CNT_BIG_BOOST || primitives[n]->body->cntType == CNT_LITTLE_BOOST)
+			{
+				primitives[n]->body->innerSensorTimer = 0.f;
+				primitives[n]->body->sensorOnline = true;
 
-		}
+			}
 	}
 
 	state = MT_STOP;
@@ -946,4 +961,20 @@ void ModuleSceneIntro::RestartMatch()
 	readyToRestart = false;
 
 	App->Reset();
+}
+
+
+void ModuleSceneIntro::ApplyGoalForce(PhysVehicle3D* scoringPlayer, PhysVehicle3D* playerThatWasScored)
+{
+	vec3 dir = scoringPlayer->GetPos() - App->scene_intro->matchBall->body->GetPos();
+
+	if (length(dir) < 50)
+		scoringPlayer->myBody->applyCentralForce({ 15000000 / dir.x, 15000000 / dir.z, 15000000 / dir.y });
+
+	dir = playerThatWasScored->GetPos() - App->scene_intro->matchBall->body->GetPos();
+
+	if (length(dir) < 30)
+		playerThatWasScored->myBody->applyCentralForce({ 10000000 / dir.x, 10000000 / dir.z, 10000000 / dir.y });
+
+
 }
