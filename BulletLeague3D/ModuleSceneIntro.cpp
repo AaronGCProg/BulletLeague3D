@@ -5,10 +5,12 @@
 #include "PhysBody3D.h"
 #include "ModulePlayer.h"
 
-ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled, uint matchMinutes) : Module(app, start_enabled), matchTime(matchMinutes * 60000)
 {
 	ballInitialPos = { 0, 12, 0 };
 	countDownFx = 0;
+	readyToRestart = false;
+	ballContactGround = false;
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -37,7 +39,7 @@ bool ModuleSceneIntro::Start()
 
 	primitives.PushBack(ground);
 
-	App->physics->AddBody(*ground,0, CNT_MAP, 0.6);
+	App->physics->AddBody(*ground,0, CNT_GROUND, 0.6)->collision_listeners.add(this);
 
 
 	//Field walls----------------------------------------------
@@ -739,6 +741,13 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	case MT_RUNNING:
 
+		if (readyToRestart && ballContactGround)
+		{
+			state = MT_RESTARTING;
+			matchStoppedTimer.Start();
+		}
+
+
 		break;
 
 
@@ -749,6 +758,17 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			matchStoppedTimer.Start();
 			App->Reset();
+		}
+
+		break;
+
+	case MT_RESTARTING:
+		matchStoppedTimer.ReStart();
+
+		if (matchStoppedTimer.Read() > 3000)
+		{
+			matchStoppedTimer.Start();
+			RestartMatch();
 		}
 
 		break;
@@ -785,14 +805,16 @@ update_status ModuleSceneIntro::Update(float dt)
 	uint seconds = 0;
 	uint minutes = 0;
 
-	Uint32 currentTime =300000 - matchtimer.Read();
+	Uint32 currentTime =60000 *3 - matchtimer.Read();
 
-	if (currentTime > 0)
+	if (matchtimer.Read() < 60000 * 2)
 	{
 		miliseconds = currentTime % 1000;
 		seconds = (currentTime / 1000) % 60;
 		minutes = (currentTime / 1000) / 60;
 	}
+	else if(!readyToRestart)
+		readyToRestart = true;
 
 
 	char title[170];
@@ -851,6 +873,14 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 		}
 		break;
+	case CNT_GROUND:
+		if (body2->cntType == CNT_BALL && readyToRestart)
+		{
+			ballContactGround = true;
+
+		}
+		break;
+
 
 	}
 
@@ -892,4 +922,18 @@ void ModuleSceneIntro::ResetBall()
 	matchBall->body->SetPos(ballInitialPos.x, ballInitialPos.y, ballInitialPos.z);
 
 
+}
+
+
+void ModuleSceneIntro::RestartMatch()
+{
+	App->player->goalNum = 0;
+	App->player_2->goalNum = 0;
+
+	matchtimer.Start();
+
+	ballContactGround = false;
+	readyToRestart = false;
+
+	App->Reset();
 }

@@ -16,13 +16,14 @@ enum matchState
 
 	MT_STOP,
 	MT_RUNNING,
-	MT_GOAL
+	MT_GOAL,
+	MT_RESTARTING
 };
 
 class ModuleSceneIntro : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
+	ModuleSceneIntro(Application* app, bool start_enabled = true, uint matchMinutes = 3);
 	~ModuleSceneIntro();
 
 	bool Start();
@@ -32,6 +33,7 @@ public:
 	bool Draw();
 	bool Reset();
 	void ResetBall();
+	void RestartMatch();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
@@ -60,6 +62,11 @@ public:
 	Timer matchStoppedTimer;
 	matchState state;
 
+	bool readyToRestart;
+	bool ballContactGround;
+
 	int countDownFx;
 	int goalFx;
+
+	uint matchTime;
 };
