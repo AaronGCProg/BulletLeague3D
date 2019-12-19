@@ -248,14 +248,20 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_LITTLE_BOOST)
 	{
-		if(body2->sensorOnline)
+		if (body2->sensorOnline)
+		{
 			turbo += 12.0f;
+			App->audio->PlayFx(App->scene_intro->boostUpFx);
+		}
 	}
 
 	if (body1->cntType == CNT_VEHICLE && body2->cntType == CNT_BIG_BOOST)
 	{
 		if (body2->sensorOnline)
+		{
 			turbo += 100.0f;
+			App->audio->PlayFx(App->scene_intro->boostUpFx);
+		}
 	}
 
 	if (turbo > 100.0f)
@@ -285,6 +291,8 @@ bool ModulePlayer::Reset()
 	vehicle->myBody->setAngularVelocity({ 0,0,0 });
 	vehicle->myBody->setLinearVelocity({ 0,0,0 });
 	vehicle->SetPos(initialPos.x, initialPos.y, initialPos.z);
+
+	this->turbo = 33.f;
 
 	return true;
 }

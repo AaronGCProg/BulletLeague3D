@@ -29,13 +29,15 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
-	update_status PostUpdate (float dt);
+	update_status PreUpdate (float dt);
 	bool CleanUp();
 	bool Draw();
 	bool Reset();
 	void ResetBall();
 	void RestartMatch();
 	void ApplyGoalForce(PhysVehicle3D* scoringPlayer, PhysVehicle3D* playerThatWasScored);
+	void LoadMapAssets();
+	void DebugInputs();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
@@ -70,6 +72,7 @@ public:
 	int countDownFx;
 	int goalFx;
 	int matchFinishFx;
+	int boostUpFx;
 
 	uint matchTime;
 
