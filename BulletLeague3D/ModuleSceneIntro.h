@@ -70,4 +70,6 @@ public:
 	int matchFinishFx;
 
 	uint matchTime;
+
+	SDL_Texture* fontTexture;
 };

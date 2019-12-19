@@ -192,3 +192,44 @@ void ModuleRenderer3D::OnResize()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+
+// Blit to screen
+bool ModuleRenderer3D::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed_x, float speed_y, SDL_RendererFlip flip, double angle, int pivot_x, int pivot_y) const
+{
+	bool ret = true;
+
+	SDL_Rect rect;
+	rect.x = (int)x;
+	rect.y = (int)y;
+	
+	if (section != NULL)
+	{
+		rect.w = section->w;
+		rect.h = section->h;
+	}
+	else
+	{
+		SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	}
+
+	rect.w *= 10;
+	rect.h *= 10;
+
+	SDL_Point* p = NULL;
+	SDL_Point pivot;
+
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+	{
+		pivot.x = pivot_x;
+		pivot.y = pivot_y;
+		p = &pivot;
+	}
+
+	/*if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	{
+		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
+		ret = false;
+	}*/
+
+	return ret;
+}

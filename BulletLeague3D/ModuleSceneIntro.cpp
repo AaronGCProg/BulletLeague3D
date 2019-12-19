@@ -13,6 +13,8 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled, uint ma
 	goalFx = 0;
 	readyToRestart = false;
 	ballContactGround = false;
+
+	fontTexture = App->fonts->Print("AAAAAAAAAAAAAAAAA", { 255,255,255,255 }, App->fonts->default);
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -709,6 +711,9 @@ bool ModuleSceneIntro::Draw()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	// HERE
+	App->renderer3D->Blit(fontTexture, 10, 10, nullptr, 1.0f);
+
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		App->player->Reset();
 

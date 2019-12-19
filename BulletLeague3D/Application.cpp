@@ -5,6 +5,8 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
+	tex = new ModuleTextures(this);
+	fonts = new ModuleFonts(this);
 	scene_intro = new ModuleSceneIntro(this, 3u);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this, true, 1);
@@ -21,6 +23,8 @@ Application::Application()
 	AddModule(window);
 	AddModule(input);
 	AddModule(audio);
+	AddModule(fonts);
+	AddModule(tex);
 	AddModule(physics);
 	
 	// Scenes
