@@ -39,8 +39,6 @@ bool ModuleSceneIntro::Start()
 	matchFinishFx = App->audio->LoadFx("assets/sound/sfx/matchfinish.wav");
 	boostUpFx = App->audio->LoadFx("assets/sound/sfx/boostUp.wav");
 
-	App->audio->PlayFx(countDownFx, 0);
-
 	//Music Start---------------------
 	Mix_VolumeMusic(60);
 	App->audio->PlayMusic("assets/sound/soundtrack.ogg");
@@ -121,7 +119,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			state = MT_RESTARTING;
 			matchStoppedTimer.Start();
-			App->audio->PlayFx(goalFx);
+			App->audio->PlayFx(matchFinishFx);
+			matchBall->SetInvisible(true);
+			matchBall->body->SetNoCollisionResponse(true);
 		}
 
 		break;
@@ -191,9 +191,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	uint seconds = 0;
 	uint minutes = 0;
 
-	Uint32 currentTime = 60000 * 3 - matchtimer.Read();
+	Uint32 currentTime = matchTime - matchtimer.Read();
 
-	if (matchtimer.Read() < 60000 * 2)
+	if (matchtimer.Read() < matchTime)
 	{
 		miliseconds = currentTime % 1000;
 		seconds = (currentTime / 1000) % 60;

@@ -24,7 +24,7 @@ enum matchState
 class ModuleSceneIntro : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true, uint matchMinutes = 3);
+	ModuleSceneIntro(Application* app, bool start_enabled = true, uint matchMinutes = 5u);
 	~ModuleSceneIntro();
 
 	bool Start();
