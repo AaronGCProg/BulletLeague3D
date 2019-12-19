@@ -7,7 +7,7 @@ Application::Application()
 	audio = new ModuleAudio(this, true);
 	tex = new ModuleTextures(this);
 	fonts = new ModuleFonts(this);
-	scene_intro = new ModuleSceneIntro(this, 3u);
+	scene_intro = new ModuleSceneIntro(this, 5u);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this, true, 1);
 	camera_2 = new ModuleCamera3D(this, true, 2);
