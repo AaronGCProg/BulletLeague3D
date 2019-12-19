@@ -94,6 +94,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			matchtimer.Stop();
 		}
+		App->player->vehicle->ResetSpeed();
+		App->player_2->vehicle->ResetSpeed();
 
 		if (matchBall->isInvisible)
 		{
