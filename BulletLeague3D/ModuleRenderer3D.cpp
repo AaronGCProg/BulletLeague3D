@@ -151,6 +151,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 	SDL_GL_SwapWindow(App->window->window);
 
+//	App->renderer3D->Blit(App->scene_intro->fontTexture, 10, 10, nullptr, 1.0f);
 
 
 
@@ -225,11 +226,13 @@ bool ModuleRenderer3D::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* 
 		p = &pivot;
 	}
 
-	/*if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+
+
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
-	}*/
+	}
 
 	return ret;
 }
