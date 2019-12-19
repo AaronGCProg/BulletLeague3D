@@ -98,7 +98,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		if (matchBall->isInvisible)
 		{
 			matchBall->SetInvisible(false);
-			matchBall->body->noCollisionResponse = false;
+			matchBall->body->SetNoCollisionResponse(false);
 			App->audio->PlayFx(countDownFx, 0);
 
 		}
@@ -242,7 +242,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 
 			matchBall->SetInvisible(true); //used as flag to loop
-			matchBall->body->noCollisionResponse = true;
+			matchBall->body->SetNoCollisionResponse(true);
 			state = MT_GOAL;
 		}
 		break;
@@ -256,7 +256,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			ApplyGoalForce(App->player->vehicle, App->player_2->vehicle);
 
 			matchBall->SetInvisible(true); //used as flag to loop
-			matchBall->body->noCollisionResponse = true;
+			matchBall->body->SetNoCollisionResponse(true);
 			state = MT_GOAL;
 
 		}

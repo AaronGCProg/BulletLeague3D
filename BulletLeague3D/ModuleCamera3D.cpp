@@ -21,6 +21,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled, uint camNum
 
 	camViewPort = { 0,0,0,0 };
 
+	//We calculate the "amount" of screen the window will ocupate
 	switch (this->cameraNum) {
 
 	case 1:
@@ -51,9 +52,11 @@ bool ModuleCamera3D::Start()
 
 	case 1:
 		target_vehicle = App->player->vehicle;
+		target_player = App->player;
 		break;
 	case 2:
 		target_vehicle = App->player_2->vehicle;
+		target_player = App->player_2;
 		break;
 	}
 
@@ -78,7 +81,6 @@ update_status ModuleCamera3D::Update(float dt)
 		cameraDebug = !cameraDebug;
 
 	
-
 	if (cameraDebug)
 	{
 		//Debug Cam
@@ -140,12 +142,16 @@ update_status ModuleCamera3D::Update(float dt)
 		
 	}
 	else
+		//REGULAR CAMERA
 	{
 		vec3 vehiclePos = target_vehicle->GetPos();
-		distanceFromCar = { 0,3.5,-7.5f };
+		camDistanceFromCar = { 0,3.5,-7.5f };
 
 		if (lookAtBall)
 		{
+			//LOOKING AT THE BALL
+
+			//The direction of the ball to the car
 			vec3 dir = vehiclePos -App->scene_intro->matchBall->body->GetPos();
 
 			//Check if the cam is too close to the ball
@@ -160,44 +166,43 @@ update_status ModuleCamera3D::Update(float dt)
 				multiplier -= 0.025f;
 			}
 
-			////Foward Vehicle Vector
+			////Normalize the vector & get only the x and z components
 			dir = normalize(dir);
-
 			dir.Set(dir.x,0.f,dir.z);
 
-			newpos = vehiclePos + dir * -distanceFromCar.z * multiplier + vec3(0, distanceFromCar.y, 0);
+			//We calculate the new position: vehiclePos + the normalized direction augmented  +y offset
+			newpos = vehiclePos + (dir * -camDistanceFromCar.z * multiplier) + vec3(0, camDistanceFromCar.y, 0);
 
-			btVector3 interpolVec = lerp({ Position.x, Position.y, Position.z }, { newpos.x, newpos.y, newpos.z }, 0.25);
-
+			//Interpolate the new distance to have a smooth transition
+			btVector3 interpolVec = lerp({ Position.x, Position.y, Position.z }, { newpos.x, newpos.y, newpos.z }, LERP_VALUE);
 			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
 
 			LookAt(App->scene_intro->matchBall->body->GetPos());
 		}
 		else
 		{
-			if (App->player->fieldContact)
+			//We calculate the rotation & distance where the camera has to be set
+			if (target_player->fieldContact)
 			{
 				mat4x4 transform;
 				target_vehicle->GetTransform(&transform);
 				mat3x3 rotationLocal(transform);
 
-				newpos = vehiclePos + rotationLocal * distanceFromCar;
+				newpos = vehiclePos + rotationLocal * camDistanceFromCar;
 
 				rotation = rotationLocal;
 			}
+				//In case the player is not touching the ground, we only calculate the position
 			else
 			{
-				newpos = vehiclePos + rotation * distanceFromCar;
+				newpos = vehiclePos + rotation * camDistanceFromCar;
 			}
 
-
-			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, 0.25);
-
+			//Change the camera position with lerp
+			btVector3 interpolVec = lerp({Position.x, Position.y, Position.z}, { newpos.x, newpos.y, newpos.z }, LERP_VALUE);
 			Position = { interpolVec.x() , interpolVec.y() , interpolVec.z() };
 
-
-
-			LookAt(vehiclePos + vec3(0, distanceFromCar.y, 0));
+			LookAt(vehiclePos + vec3(0, camDistanceFromCar.y, 0));
 		}
 	}
 
@@ -274,7 +279,8 @@ SDL_Rect ModuleCamera3D::getViewPort()
 	return camViewPort;
 }
 
-
+// -----------------------------------------------------------------
+//Change the camera viewport when the window size is alterated
 void ModuleCamera3D::ReSizeViewPorts()
 {
 	switch (this->cameraNum) {

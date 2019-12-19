@@ -122,5 +122,14 @@ void PhysBody3D::SetLinealVelocity(btVector3 speed)
 	this->body->setLinearVelocity(speed);
 }
 
+// ---------------------------------------------------------
+void PhysBody3D::SetNoCollisionResponse(bool no_response)
+{
+	if (this->noCollisionResponse != no_response)
+		noCollisionResponse = no_response;
+}
+
+
+
 
 
