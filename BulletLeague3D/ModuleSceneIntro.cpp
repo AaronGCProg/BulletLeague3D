@@ -781,14 +781,22 @@ update_status ModuleSceneIntro::Update(float dt)
 		}
 	}
 
-	Uint32 currentTime = matchtimer.Read();
-	uint miliseconds = currentTime % 1000;
-	uint seconds = (currentTime / 1000) % 60;
-	uint minutes = (currentTime / 1000) / 60;
+	uint miliseconds = 0;
+	uint seconds = 0;
+	uint minutes = 0;
+
+	Uint32 currentTime =300000 - matchtimer.Read();
+
+	if (currentTime > 0)
+	{
+		miliseconds = currentTime % 1000;
+		seconds = (currentTime / 1000) % 60;
+		minutes = (currentTime / 1000) / 60;
+	}
 
 
 	char title[170];
-	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  | Turbo: %.1f | Goals: %d || Player 2: %.1f Km/h | Angular Speed %.1f | Turbo: %.1f| Goals: %d ||| Timer: %d:%d:%d",
+	sprintf_s(title, "Player 1: %.1f Km/h | Angular Speed %.1f  | Turbo: %.1f | Goals: %d || Player 2: %.1f Km/h | Angular Speed %.1f | Turbo: %.1f| Goals: %d ||| Timer: %d:%02d:%02d",
 		App->player->vehicle->GetKmh(), App->player->vehicle->myBody->getAngularVelocity().length(), App->player->turbo, App->player->goalNum,
 		App->player_2->vehicle->GetKmh(), App->player_2->vehicle->myBody->getAngularVelocity().length(), App->player_2->turbo, App->player_2->goalNum,
 		minutes, seconds, miliseconds);
