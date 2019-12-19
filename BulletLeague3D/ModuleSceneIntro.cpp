@@ -741,7 +741,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	switch (state)
 	{
 	case MT_STOP:
+		if(matchtimer.running)
 		matchtimer.Stop();
+
 		if (matchBall->isInvisible)
 		{
 			matchBall->SetInvisible(false);
@@ -769,11 +771,13 @@ update_status ModuleSceneIntro::Update(float dt)
 			App->audio->PlayFx(goalFx);
 		}
 
-
 		break;
 
 
 	case MT_GOAL:
+		if (matchtimer.running)
+			matchtimer.Stop();
+
 		matchStoppedTimer.ReStart();
 
 		if (matchStoppedTimer.Read() > 3000)
@@ -785,6 +789,9 @@ update_status ModuleSceneIntro::Update(float dt)
 		break;
 
 	case MT_RESTARTING:
+		if (matchtimer.running)
+			matchtimer.Stop();
+
 		matchStoppedTimer.ReStart();
 
 		if (matchStoppedTimer.Read() > 3000)
