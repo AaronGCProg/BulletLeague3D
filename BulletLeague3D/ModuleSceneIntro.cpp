@@ -667,6 +667,9 @@ bool ModuleSceneIntro::Start()
 	goalFx = App->audio->LoadFx("assets/sound/sfx/goal.wav");
 	matchFinishFx = App->audio->LoadFx("assets/sound/sfx/matchfinish.wav");
 
+	Mix_VolumeMusic(60);
+	App->audio->PlayMusic("assets/sound/soundtrack.ogg");
+
 	App->audio->PlayFx(countDownFx, 0);
 
 
