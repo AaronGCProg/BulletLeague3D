@@ -7,6 +7,10 @@
 #include "Bullet/include/LinearMath/btVector3.h"
 #include "SDL/include/SDL_rect.h"
 
+#define LERP_VALUE 0.25
+
+class ModulePlayer;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -32,7 +36,7 @@ private:
 
 public:
 	
-	vec3 X, Y, Z, Position, Reference, distanceFromCar, newpos;
+	vec3 X, Y, Z, Position, Reference, camDistanceFromCar, newpos;
 	mat3x3 rotation;
 
 	bool cameraDebug = false;
@@ -42,6 +46,7 @@ public:
 	int cameraNum = 0;
 	SDL_Rect camViewPort;
 	PhysVehicle3D* target_vehicle = nullptr;
+	ModulePlayer* target_player = nullptr;
 
 private:
 

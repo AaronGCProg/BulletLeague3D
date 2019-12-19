@@ -33,6 +33,7 @@ public:
 	void SetRestitution(btScalar restitution);
 	void SetAngularVelocity(btVector3 speed);
 	void SetLinealVelocity(btVector3 speed);
+	void SetNoCollisionResponse(bool no_collision);
 
 
 	ContactType cntType;

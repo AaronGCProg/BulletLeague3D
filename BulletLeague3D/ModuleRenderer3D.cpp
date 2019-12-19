@@ -9,8 +9,7 @@
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{
-}
+{}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -125,6 +124,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	//We iterate through all the windows we have & Render for every single one
 	p2List_item<ModuleCamera3D*>* item = App->cam_list.getFirst();
 
 	int lightNum = 0;
@@ -138,7 +138,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 		App->Draw();
 
-		// light 0 on cam pos
+		// lights on cam pos
 		lights[lightNum].SetPos(item->data->Position.x, item->data->Position.y, item->data->Position.z);
 
 		for (uint i = 0; i < MAX_LIGHTS; ++i)
@@ -153,8 +153,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 //	App->renderer3D->Blit(App->scene_intro->fontTexture, 10, 10, nullptr, 1.0f);
 
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -168,11 +166,13 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-
+//Called when a window is alterated
 void ModuleRenderer3D::OnResize()
 {
+	//We set the new screen height & width
 	SDL_GetWindowSize(App->window->window, &App->window->SCREEN_WIDTH, &App->window->SCREEN_HEIGHT);
 
+	//Change all the viewprtss
 	p2List_item<ModuleCamera3D*>* item = App->cam_list.getFirst();
 	while (item != NULL)
 	{
@@ -181,9 +181,9 @@ void ModuleRenderer3D::OnResize()
 		item = item->next;
 	}
 
+	//Calculate OpenGl stuff-----------------
 	float width = (float)App->window->SCREEN_WIDTH;
 	float height =(float)App->window->SCREEN_HEIGHT;
-
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
