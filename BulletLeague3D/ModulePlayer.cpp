@@ -297,7 +297,7 @@ void ModulePlayer::PlayerInputs()
 	{
 
 		if(vehicle->GetKmh() <= 0)
-			acceleration = MAX_ACCELERATION * 10;
+			acceleration = MAX_ACCELERATION * 8;
 		else
 			acceleration = MAX_ACCELERATION;
 
@@ -395,7 +395,7 @@ void ModulePlayer::PlayerInputs()
 	{
 
 		if (vehicle->GetKmh() >= 0)
-			acceleration = -MAX_ACCELERATION * 10;
+			acceleration = -MAX_ACCELERATION * 8;
 		else
 			acceleration = -MAX_ACCELERATION;
 
