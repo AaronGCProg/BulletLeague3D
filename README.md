@@ -2,6 +2,15 @@
 BulletLeague3D is car physics based game that takes inspiration from Rocket League.
 This is an student project made by sophomore students from CITM.
 
+## Objectives
+The objective of BulletLeague3D is to be a tribute to the Rocket League style of gameplay (fiest introduced to the market by SSper Snic Acrobatic Battle Powered Cars). The main goal of our project is to have two cars (and thus, multiple cameras) that beheave like the ones of Rocket League (jump, boost, flips, flying,...), a field of "Rocke League-like football" & a game loop according that represents it's gameplay.
+
+## Guide to Finish the Game
+Every match lasts 5min; whoever scores more wins the match. After a match is over, the score of each player is reset & a new match starts. So, to finish the game you have to beat your oponent!
+To score a goal, you must push the ball fully into your oponen's goal; when a goal is performed, a new round starts. This is our main game loop & it repeats itself until the match is finished & a new one starts.
+
+In case of a draw, everybody is a winner:)
+
 ## Link to our Github Project:
 https://github.com/AaronGCProg/BulletLeague3D
 
@@ -15,18 +24,18 @@ https://github.com/AaronGCProg/BulletLeague3D
 - D: Turn right
 - S: Move backwards
 - Space: Jump (When jumping, you can perform an additional jump that can become a directional flip toward a direction!)
-- B: Breaqk
+- B: Break
 - Left-Shift: Turbo
 - R: Change Camera Mode (Player focused - Ball Focused)
 
 ### Player 2 Keyboard control:
 
 - Arrow UP: Move foward
-- Arrow LEFT: Move left
-- Arror RIGHT: Move right
-- Arrow DOWN: Move down
+- Arrow LEFT: Turn left
+- Arror RIGHT: Turn right
+- Arrow DOWN: Move backwards
 - NUMPAD 0: Jump (When jumping, you can perform an additional jump that can become a directional flip toward a direction!)
-- NUMPAD 1: Breaqk
+- NUMPAD 1: Break
 - Right-Shift: Turbo
 - NUMPAD 5: Change Camera Mode (Player focused - Ball Focused)
 
