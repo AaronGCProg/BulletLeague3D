@@ -67,6 +67,7 @@ public:
 
 	int countDownFx;
 	int goalFx;
+	int matchFinishFx;
 
 	uint matchTime;
 };

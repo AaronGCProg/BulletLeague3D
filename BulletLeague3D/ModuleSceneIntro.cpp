@@ -9,6 +9,8 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled, uint ma
 {
 	ballInitialPos = { 0, 12, 0 };
 	countDownFx = 0;
+	matchFinishFx = 0;
+	goalFx = 0;
 	readyToRestart = false;
 	ballContactGround = false;
 }
@@ -661,6 +663,8 @@ bool ModuleSceneIntro::Start()
 
 	countDownFx = App->audio->LoadFx("assets/sound/sfx/countdown.wav");
 	goalFx = App->audio->LoadFx("assets/sound/sfx/goal.wav");
+	matchFinishFx = App->audio->LoadFx("assets/sound/sfx/matchfinish.wav");
+
 	App->audio->PlayFx(countDownFx, 0);
 
 
@@ -745,6 +749,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			state = MT_RESTARTING;
 			matchStoppedTimer.Start();
+			App->audio->PlayFx(goalFx);
 		}
 
 
