@@ -301,9 +301,13 @@ void ModulePlayer::PlayerInputs()
 {
 	turn = acceleration = brake = 0.0f;
 
-	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && fieldContact && vehicle->GetKmh() < 160)
+	if (App->input->GetKey(Forward[playerNum - 1]) == KEY_REPEAT && fieldContact && vehicle->GetKmh() < 180)
 	{
-		acceleration = MAX_ACCELERATION;
+
+		if(vehicle->GetKmh() <= 0)
+			acceleration = MAX_ACCELERATION * 8;
+		else
+			acceleration = MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
@@ -395,9 +399,13 @@ void ModulePlayer::PlayerInputs()
 
 	}
 
-	if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && fieldContact)
+	if (App->input->GetKey(Backward[playerNum - 1]) == KEY_REPEAT && fieldContact && vehicle->GetKmh() > -120)
 	{
-		acceleration = -MAX_ACCELERATION;
+
+		if (vehicle->GetKmh() >= 0)
+			acceleration = -MAX_ACCELERATION * 8;
+		else
+			acceleration = -MAX_ACCELERATION;
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
 	}
@@ -466,7 +474,7 @@ void ModulePlayer::PlayerInputs()
 
 	if (App->input->GetKey(Turbo[playerNum - 1]) == KEY_REPEAT && turbo > 0)
 	{
-		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 100.0f));
+		vehicle->myBody->applyCentralImpulse(WorldToLocal(0.0f, 0.0f, 125.0f));
 		turbo -= 0.5f;
 	}
 

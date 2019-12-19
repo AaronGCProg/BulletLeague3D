@@ -41,6 +41,12 @@ bool ModuleSceneIntro::Start()
 
 	App->audio->PlayFx(countDownFx, 0);
 
+	//Music Start---------------------
+	Mix_VolumeMusic(60);
+	App->audio->PlayMusic("assets/sound/soundtrack.ogg");
+
+	App->audio->PlayFx(countDownFx, 0);
+
 	return true;
 }
 
