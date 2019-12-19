@@ -297,7 +297,7 @@ void ModulePlayer::PlayerInputs()
 	{
 
 		if(vehicle->GetKmh() <= 0)
-			acceleration = MAX_ACCELERATION * 8;
+			acceleration = MAX_ACCELERATION * 5;
 		else
 			acceleration = MAX_ACCELERATION;
 
@@ -322,7 +322,7 @@ void ModulePlayer::PlayerInputs()
 		{
 			turn += TURN_DEGREES;
 
-			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 10000.0f, 0.0f));
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, 20000.0f, 0.0f));
 		}
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
@@ -362,7 +362,8 @@ void ModulePlayer::PlayerInputs()
 		{
 			turn -= TURN_DEGREES;
 
-			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -10000.0f, 0.0f));
+			vehicle->myBody->applyTorque(WorldToLocal(0.0f, -20000.0f, 0.0f));
+			
 		}
 
 		vehicle->Push(0.0f, -STICK_FORCE, 0.0f);
@@ -395,7 +396,7 @@ void ModulePlayer::PlayerInputs()
 	{
 
 		if (vehicle->GetKmh() >= 0)
-			acceleration = -MAX_ACCELERATION * 8;
+			acceleration = -MAX_ACCELERATION * 5;
 		else
 			acceleration = -MAX_ACCELERATION;
 

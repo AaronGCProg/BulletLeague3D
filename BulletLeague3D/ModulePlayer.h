@@ -13,7 +13,7 @@ struct PhysVehicle3D;
 #define SMOOTH_ACROBATIC_SPEED 3.0f
 #define CAP_ACROBATIC_SPEED 6.5f
 
-#define BRAKE_POWER 100.0f
+#define BRAKE_POWER 300.0f
 #define JUMP_FORCE 4000.0f
 #define IMPULSE_FORCE 2000.0f
 #define MAX_TORQUE 2000.0f
