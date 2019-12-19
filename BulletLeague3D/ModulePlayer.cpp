@@ -194,7 +194,7 @@ bool ModulePlayer::CleanUp()
 
 update_status ModulePlayer::PreUpdate(float dt)
 {
-	if(App->scene_intro->state != MT_STOP)
+	if(App->scene_intro->state != MT_STOP && App->scene_intro->state != MT_RESTARTING)
 	PlayerInputs();
 
 	return UPDATE_CONTINUE;
