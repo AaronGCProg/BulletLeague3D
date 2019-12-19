@@ -65,7 +65,7 @@ https://github.com/AaronGCProg/BulletLeague3D
 ## License:
 MIT License
 
-Copyright (c) [2019] [Aarón Guerrero Cruz / Âlex Melenchón Maza]
+Copyright (c) [2019] [Aarón Guerrero Cruz / Àlex Melenchón Maza]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
